@@ -5,7 +5,7 @@ tags: [expander, graph, random walk]
 categories: Tools
 ---
 
-The idea of the proof comes from [^1].
+The idea of the proof is from [^1], page 429-431.
 
 # Definition
 
