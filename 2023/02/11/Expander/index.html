@@ -19,25 +19,30 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"cppascalinux.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Domestic Longhair">
-<meta property="og:type" content="website">
-<meta property="og:title" content="cppascalinux&#39;s Blog">
-<meta property="og:url" content="http://cppascalinux.github.io/index.html">
+    <meta name="description" content="The idea of the proof comes from 1. Definition Spectral Expander  Let \(G\) be an \(n\)-vertex \(d\)-regular undirected graph. Let \(A\) be its random walk matrix, i.e. \(a_{i,j}&#x3D;\frac 1d |E(i,j)|\).">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Edge Expansion Implies Spectral Expansion">
+<meta property="og:url" content="http://cppascalinux.github.io/2023/02/11/Expander/index.html">
 <meta property="og:site_name" content="cppascalinux&#39;s Blog">
-<meta property="og:description" content="Domestic Longhair">
+<meta property="og:description" content="The idea of the proof comes from 1. Definition Spectral Expander  Let \(G\) be an \(n\)-vertex \(d\)-regular undirected graph. Let \(A\) be its random walk matrix, i.e. \(a_{i,j}&#x3D;\frac 1d |E(i,j)|\).">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-11T20:35:24.000Z">
+<meta property="article:modified_time" content="2023-02-11T14:27:09.363Z">
 <meta property="article:author" content="cppascalinux">
+<meta property="article:tag" content="expander">
+<meta property="article:tag" content="graph">
+<meta property="article:tag" content="random walk">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://cppascalinux.github.io/">
+<link rel="canonical" href="http://cppascalinux.github.io/2023/02/11/Expander/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://cppascalinux.github.io/2023/02/11/Expander/","path":"2023/02/11/Expander/","title":"Edge Expansion Implies Spectral Expansion"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>cppascalinux's Blog</title>
+<title>Edge Expansion Implies Spectral Expansion | cppascalinux's Blog</title>
   
 
 
@@ -70,7 +75,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">cppascalinux's Blog</h1>
+      <p class="site-title">cppascalinux's Blog</p>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">QwQ</p>
@@ -124,7 +129,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -137,6 +142,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#definition"><span class="nav-number">1.</span> <span class="nav-text">Definition</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#spectral-expander"><span class="nav-number">1.1.</span> <span class="nav-text">Spectral Expander</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#edge-expander"><span class="nav-number">1.2.</span> <span class="nav-text">Edge Expander</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#edge-expansion-implies-spectral-expansion"><span class="nav-number">2.</span> <span class="nav-text">Edge Expansion
+Implies Spectral Expansion</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#theorem"><span class="nav-number">2.1.</span> <span class="nav-text">Theorem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proof"><span class="nav-number">2.2.</span> <span class="nav-text">Proof</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#claim-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">Claim 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#claim-2"><span class="nav-number">2.2.2.</span> <span class="nav-text">Claim 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#proof-of-claim-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">Proof of Claim 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#proof-of-claim-2"><span class="nav-number">2.2.4.</span> <span class="nav-text">Proof of Claim 2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trivia"><span class="nav-number">2.3.</span> <span class="nav-text">Trivia</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,16 +194,17 @@
 
     </div>
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://cppascalinux.github.io/2023/02/11/Expander/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -210,13 +218,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | cppascalinux's Blog">
+      <meta itemprop="name" content="Edge Expansion Implies Spectral Expansion | cppascalinux's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/11/Expander/" class="post-title-link" itemprop="url">Edge Expansion Implies Spectral Expansion</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Edge Expansion Implies Spectral Expansion
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -240,6 +248,13 @@
     </span>
 
   
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
   
   <span class="post-meta-item">
     
@@ -278,7 +293,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>The idea of the proof comes from <a href="#fn1" class="footnote-ref"
+        <p>The idea of the proof comes from <a href="#fn1" class="footnote-ref"
 id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <h1 id="definition">Definition</h1>
 <h2 id="spectral-expander">Spectral Expander</h2>
@@ -429,7 +444,6 @@ role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
-      
     </div>
 
     
@@ -437,387 +451,40 @@ role="doc-backlink">↩︎</a></p></li>
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
+          
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://cppascalinux.github.io/2023/02/11/math-test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="cppascalinux">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cppascalinux's Blog">
-      <meta itemprop="description" content="Domestic Longhair">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | cppascalinux's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/11/math-test/" class="post-title-link" itemprop="url">Markdown and $Math$ Test</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2023-02-11 17:51:33 / Modified: 14:27:09" itemprop="dateCreated datePublished" datetime="2023-02-11T17:51:33Z">2023-02-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2023/02/11/math-test/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/02/11/math-test/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>581</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="h1-heading-8-">h1 Heading 8-)</h1>
-<h2 id="h2-heading">h2 Heading</h2>
-<h3 id="h3-heading">h3 Heading</h3>
-<h4 id="h4-heading">h4 Heading</h4>
-<h5 id="h5-heading">h5 Heading</h5>
-<h6 id="h6-heading">h6 Heading</h6>
-<h2 id="horizontal-rules">Horizontal Rules</h2>
-<hr />
-<hr />
-<hr />
-<h2 id="typographic-replacements">Typographic replacements</h2>
-<p>Enable typographer option to see result.</p>
-<ol start="3" type="a">
-<li><ol start="3" type="A">
-<li><ol start="18" type="a">
-<li><ol start="18" type="A">
-<li>(tm) (TM) (p) (P) +-</li>
-</ol></li>
-</ol></li>
-</ol></li>
-</ol>
-<p>test.. test... test..... test?..... test!....</p>
-<p>!!!!!! ???? ,, -- ---</p>
-<p>"Smartypants, double quotes" and 'single quotes'</p>
-<h2 id="emphasis">Emphasis</h2>
-<p><strong>This is bold text</strong></p>
-<p><strong>This is bold text</strong></p>
-<p><em>This is italic text</em></p>
-<p><em>This is italic text</em></p>
-<p><del>Strikethrough</del></p>
-<h2 id="blockquotes">Blockquotes</h2>
-<blockquote>
-<p>Blockquotes can also be nested... &gt; ...by using additional
-greater-than signs right next to each other... &gt; &gt; ...or with
-spaces between arrows.</p>
-</blockquote>
-<h2 id="lists">Lists</h2>
-<p>Unordered</p>
+<div class="post-copyright">
 <ul>
-<li>Create a list by starting a line with <code>+</code>,
-<code>-</code>, or <code>*</code></li>
-<li>Sub-lists are made by indenting 2 spaces:
-<ul>
-<li>Marker character change forces new list start:
-<ul>
-<li>Ac tristique libero volutpat at</li>
-<li>Facilisis in pretium nisl aliquet</li>
-<li>Nulla volutpat aliquam velit</li>
-</ul></li>
-</ul></li>
-<li>Very easy!</li>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>cppascalinux
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://cppascalinux.github.io/2023/02/11/Expander/" title="Edge Expansion Implies Spectral Expansion">http://cppascalinux.github.io/2023/02/11/Expander/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-SA</a> unless stating additionally.
+  </li>
 </ul>
-<p>Ordered</p>
-<ol type="1">
-<li><p>Lorem ipsum dolor sit amet</p></li>
-<li><p>Consectetur adipiscing elit</p></li>
-<li><p>Integer molestie lorem at massa</p></li>
-<li><p>You can use sequential numbers...</p></li>
-<li><p>...or keep all the numbers as <code>1.</code></p></li>
-</ol>
-<p>Start numbering with offset:</p>
-<ol start="57" type="1">
-<li>foo</li>
-<li>bar</li>
-</ol>
-<h2 id="code">Code</h2>
-<p>Inline <code>code</code></p>
-<p>Indented code</p>
-<pre><code>// Some comments
-line 1 of code
-line 2 of code
-line 3 of code</code></pre>
-<p>Block code "fences"</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sample text here...</span><br></pre></td></tr></table></figure>
-<p>Syntax highlighting</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="keyword">function</span> (<span class="params">bar</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> bar++;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">foo</span>(<span class="number">5</span>));</span><br></pre></td></tr></table></figure>
-<h2 id="tables">Tables</h2>
-<table>
-<colgroup>
-<col style="width: 35%" />
-<col style="width: 64%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>data</td>
-<td>path to data files to supply the data that will be passed into
-templates.</td>
-</tr>
-<tr class="even">
-<td>engine</td>
-<td>engine to be used for processing templates. Handlebars is the
-default.</td>
-</tr>
-<tr class="odd">
-<td>ext</td>
-<td>extension to be used for dest files.</td>
-</tr>
-</tbody>
-</table>
-<p>Right aligned columns</p>
-<table>
-<colgroup>
-<col style="width: 36%" />
-<col style="width: 63%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: right;">Option</th>
-<th style="text-align: right;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">data</td>
-<td style="text-align: right;">path to data files to supply the data
-that will be passed into templates.</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">engine</td>
-<td style="text-align: right;">engine to be used for processing
-templates. Handlebars is the default.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">ext</td>
-<td style="text-align: right;">extension to be used for dest files.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="links">Links</h2>
-<p><a target="_blank" rel="noopener" href="http://dev.nodeca.com">link text</a></p>
-<p><a target="_blank" rel="noopener" href="http://nodeca.github.io/pica/demo/" title="title text!">link
-with title</a></p>
-<p>Autoconverted link https://github.com/nodeca/pica (enable linkify to
-see)</p>
-<h2 id="images">Images</h2>
-<p><img src="https://octodex.github.com/images/minion.png"
-alt="Minion" /> <img
-src="https://octodex.github.com/images/stormtroopocat.jpg"
-title="The Stormtroopocat" alt="Stormtroopocat" /></p>
-<p>Like links, Images also have a footnote style syntax</p>
-<figure>
-<img src="https://octodex.github.com/images/dojocat.jpg"
-title="The Dojocat" alt="Alt text" />
-<figcaption aria-hidden="true">Alt text</figcaption>
-</figure>
-<p>With a reference later in the document defining the URL location:</p>
-<h2 id="plugins">Plugins</h2>
-<p>The killer feature of <code>markdown-it</code> is very effective
-support of <a
-target="_blank" rel="noopener" href="https://www.npmjs.org/browse/keyword/markdown-it-plugin">syntax
-plugins</a>.</p>
-<h3 id="emojies"><a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-emoji">Emojies</a></h3>
-<blockquote>
-<p>Classic markup: :wink: :crush: :cry: :tear: :laughing: :yum:</p>
-<p>Shortcuts (emoticons): :-) :-( 8-) ;)</p>
-</blockquote>
-<p>see <a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-emoji#change-output">how
-to change output</a> with twemoji.</p>
-<h3 id="subscript-superscript"><a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-sub">Subscript</a> / <a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-sup">Superscript</a></h3>
-<ul>
-<li>19<sup>th</sup></li>
-<li>H<sub>2</sub>O</li>
-</ul>
-<h3 id="ins"><a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-ins">&lt;ins&gt;</a></h3>
-<p>++Inserted text++</p>
-<h3 id="mark"><a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-mark">&lt;mark&gt;</a></h3>
-<p>==Marked text==</p>
-<h3 id="footnotes"><a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-footnote">Footnotes</a></h3>
-<p>Footnote 1 link<a href="#fn1" class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a>.</p>
-<p>Footnote 2 link<a href="#fn2" class="footnote-ref" id="fnref2"
-role="doc-noteref"><sup>2</sup></a>.</p>
-<p>Inline footnote<a href="#fn3" class="footnote-ref" id="fnref3"
-role="doc-noteref"><sup>3</sup></a> definition.</p>
-<p>Duplicated footnote reference<a href="#fn4" class="footnote-ref"
-id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-<h3 id="definition-lists"><a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-deflist">Definition
-lists</a></h3>
-<dl>
-<dt>Term 1</dt>
-<dd>
-<p>Definition 1 with lazy continuation.</p>
-</dd>
-<dt>Term 2 with <em>inline markup</em></dt>
-<dd>
-<p>Definition 2</p>
-<pre><code>&#123; some code, part of Definition 2 &#125;</code></pre>
-<p>Third paragraph of definition 2.</p>
-</dd>
-</dl>
-<p><em>Compact style:</em></p>
-<dl>
-<dt>Term 1</dt>
-<dd>
-Definition 1
-</dd>
-<dt>Term 2</dt>
-<dd>
-Definition 2a
-</dd>
-<dd>
-Definition 2b
-</dd>
-</dl>
-<h3 id="abbreviations"><a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-abbr">Abbreviations</a></h3>
-<p>This is HTML abbreviation example.</p>
-<p>It converts "HTML", but keep intact partial entries like "xxxHTMLyyy"
-and so on.</p>
-<p>*[HTML]: Hyper Text Markup Language</p>
-<h3 id="custom-containers"><a
-target="_blank" rel="noopener" href="https://github.com/markdown-it/markdown-it-container">Custom
-containers</a></h3>
-<div class="warning">
-<p><em>here be dragons</em></p>
 </div>
-<p>'qwq'qwq"qwq"qwq</p>
-<p>Inline math test <span
-class="math inline">\(e=mc^2,\text{e}^{i\pi}+1=0\)</span></p>
-<p><span class="math display">\[\frac{\partial u}{\partial t}
-= h^2 \left( \frac{\partial^2 u}{\partial x^2} +
-\frac{\partial^2 u}{\partial y^2} +
-\frac{\partial^2 u}{\partial z^2}\right)\]</span></p>
-<p><span class="math display">\[\begin{equation}\label{eq2}
-\begin{aligned}
-a &amp;= b + c \\
-  &amp;= d + e + f + g \\
-  &amp;= h + i
-\end{aligned}
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{align}
-a &amp;= b + c \label{eq3} \\
-x &amp;= yz \label{eq4} \\
-l &amp;= m - n \label{eq5}
-\end{align}\]</span></p>
-<p><span class="math display">\[\begin{align}
--4 + 5x &amp;= 2 + y \nonumber \\
-w + 2 &amp;= -1 + w \\
-ab &amp;= cb
-\end{align}\]</span></p>
-<p><span class="math display">\[
-x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}
-\]</span></p>
-<section id="footnotes" class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Footnote <strong>can have markup</strong></p>
-<p>and multiple paragraphs.<a href="#fnref1" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Footnote text.<a href="#fnref2" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Text of inline footnote<a href="#fnref3"
-class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Footnote text.<a href="#fnref4" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
 
-      
-    </div>
+          <div class="post-tags">
+              <a href="/tags/expander/" rel="tag"><i class="fa fa-tag"></i> expander</a>
+              <a href="/tags/graph/" rel="tag"><i class="fa fa-tag"></i> graph</a>
+              <a href="/tags/random-walk/" rel="tag"><i class="fa fa-tag"></i> random walk</a>
+          </div>
 
-    
-    
-    
+        
 
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/11/math-test/" rel="prev" title="Markdown and $Math$ Test">
+                  <i class="fa fa-chevron-left"></i> Markdown and $Math$ Test
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
@@ -826,6 +493,12 @@ role="doc-backlink">↩︎</a></p></li>
 
 
 
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
 </div>
   </main>
 

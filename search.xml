@@ -1,6 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Edge Expansion Implies Spectral Expansion</title>
+    <url>/2023/02/11/Expander/</url>
+    <content><![CDATA[<p>The idea of the proof comes from <a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<h1 id="definition">Definition</h1>
+<h2 id="spectral-expander">Spectral Expander</h2>
+<blockquote>
+<p>Let <span class="math inline">\(G\)</span> be an <span
+class="math inline">\(n\)</span>-vertex <span
+class="math inline">\(d\)</span>-regular undirected graph. Let <span
+class="math inline">\(A\)</span> be its random walk matrix, i.e. <span
+class="math inline">\(a_{i,j}=\frac 1d |E(i,j)|\)</span>. One can see
+that the largest eigenvalue of <span class="math inline">\(A\)</span> is
+<span class="math inline">\(1\)</span>. We define <span
+class="math inline">\(\lambda(G)\)</span> as the second-largest
+eigenvalue of <span class="math inline">\(H\)</span>. If <span
+class="math inline">\(\lambda(G)\le\lambda\)</span> for some <span
+class="math inline">\(\lambda&lt;1\)</span>, then we say <span
+class="math inline">\(G\)</span> is an <span
+class="math inline">\((n,d,\lambda)\)</span><em>-spectral-expander</em>.</p>
+</blockquote>
+<h2 id="edge-expander">Edge Expander</h2>
+<blockquote>
+<p>Let <span class="math inline">\(G=(V,E)\)</span> be an <span
+class="math inline">\(n\)</span>-vertex <span
+class="math inline">\(d\)</span>-regular undirected graph. We call it an
+<span class="math inline">\((n,d,\rho)\)</span><em>-edge-expander</em>
+iff <span class="math display">\[
+\forall S\subset V, |S|\le\frac n2\implies E(S,\bar S)\ge\rho d|S|
+\]</span></p>
+</blockquote>
+<h1 id="edge-expansion-implies-spectral-expansion">Edge Expansion
+Implies Spectral Expansion</h1>
+<p>In fact, we can show that the two expanders are somewhat
+"equivalent", i.e. spectral expansion implies edge expansion and vice
+versa. Here we focus on the hard direction: edge expansion implies
+spectral expansion.</p>
+<h2 id="theorem">Theorem</h2>
+<blockquote>
+<p>An <span class="math inline">\((n,d,\rho)\)</span>-edge-expander is
+an <span
+class="math inline">\((n,d,1-\frac{\rho^2}2)\)</span>-spectral-expander.</p>
+</blockquote>
+<h2 id="proof">Proof</h2>
+<p>The proof is somewhat tricky. Here the main technical obstacle is
+that, the eigenvector of <span class="math inline">\(G\)</span> may not
+be distributed evenly, thus cannot be used to directly estimate the edge
+expansion. (Try prove it yourself and you'll understand what I
+mean!)</p>
+<p>Let <span class="math inline">\(G\)</span> be an <span
+class="math inline">\((n,d,\rho)\)</span>-edge-expander, and let <span
+class="math inline">\(\lambda=\lambda(G)\)</span>. We want to show that
+<span class="math inline">\(\lambda\le1-\frac{\rho^2}2\)</span>.</p>
+<p>Let <span class="math inline">\(\vec u\)</span> be n unitary
+eigenvector of eigenvalue <span class="math inline">\(\lambda\)</span>.
+We decompose <span class="math inline">\(\vec u\)</span> into positive
+and negative parts: <span class="math inline">\(\vec u=\vec v+\vec
+w\)</span>, where <span class="math inline">\(\forall i, v_i\ge0\ge
+w_i\)</span>. Without loss of generality, we may assume that the number
+of non-zero entries in <span class="math inline">\(\vec v\)</span> is
+<span class="math inline">\(\le\frac n2\)</span>. (Otherwise we can
+simply take <span class="math inline">\(-\vec u\)</span>). We define a
+special value <span class="math inline">\(Z\)</span>: <span
+class="math display">\[
+Z:=\sum_{i,j}a_{i,j}|v_i^2-v_j^2|
+\]</span></p>
+<p>Then the theorem follows immediately from the following two
+claims:</p>
+<h3 id="claim-1">Claim 1</h3>
+<blockquote>
+<p><span class="math inline">\(Z\ge2\rho|\vec v|^2\)</span></p>
+</blockquote>
+<h3 id="claim-2">Claim 2</h3>
+<blockquote>
+<p><span class="math inline">\(Z\le\sqrt{8(1-\lambda)}|\vec
+v|^2\)</span></p>
+</blockquote>
+<h3 id="proof-of-claim-1">Proof of Claim 1</h3>
+<p>Without loss of generality, we may assume that <span
+class="math inline">\(v_1\ge v_2\ge\cdots\ge v_n\)</span>. Then we can
+see that <span class="math display">\[\begin{align*}
+    Z&amp;=2\sum_{i&gt;j}a_{i,j}(v_i^2-v_j^2)\\
+    &amp;=2\sum_{i&gt;k\ge j}a_{i,j}(v_k^2-v_{k+1}^2)\\
+    &amp;=2\sum_{k=1}^{\frac n2}(v_k^2-v_{k+1}^2)\sum_{i&gt;k\ge
+j}a_{i,j}\\
+    &amp;=2\sum_{k=1}^{\frac
+n2}(v_k^2-v_{k+1}^2)\frac1d|E(\{1,\cdots,k\},\{k+1,\cdots,n\})|\\
+    &amp;\ge2\sum_{k=1}^{\frac n2}(v_k^2-v_{k+1}^2)k\rho\\
+    &amp;=2\rho\sum_{k=1}^{\frac n2}v_k^2\\
+    &amp;=2\rho|\vec v|^2
+\end{align*}\]</span></p>
+<h3 id="proof-of-claim-2">Proof of Claim 2</h3>
+<p>Since <span class="math inline">\(\vec u\)</span> is an eigenvector
+of <span class="math inline">\(A\)</span>, we have <span
+class="math inline">\(\vec v^TA\vec u=\lambda\vec v^T\vec u=\lambda
+|\vec v|^2\)</span>. On the other hand, <span class="math inline">\(\vec
+v^TA\vec u=\vec v^TA\vec v+\vec v^TA\vec w\)</span>. One can easily see
+that <span class="math inline">\(\vec v^TA\vec w\le0\)</span>. Therefore
+we have <span class="math inline">\(\vec v^TA\vec
+v\ge\lambda|v|^2\)</span>.</p>
+<p>We then compute another sum: <span
+class="math display">\[\begin{align*}
+    &amp;\sum_{i,j}a_{i,j}(v_i-v_j)^2\\
+    =&amp;\sum_{i,j}a_{i,j}v_i^2+\sum_{i,j}a_{i,j}v_j^2-2\sum_{i,j}a_{i,j}v_iv_j\\
+    =&amp;2|\vec v|^2-2\vec v^TA\vec v\\
+    \le&amp;2(1-\lambda)|\vec v|^2
+\end{align*}\]</span></p>
+<p>In other words, <span class="math display">\[
+    1-\lambda\ge\frac{\sum_{i,j}a_{i,j}(v_i-v_j)^2}{2|\vec v|^2}
+\]</span></p>
+<p>Using the Cauchy-Schwarz inequality, one can see that <span
+class="math display">\[
+    \left(\sum_{i,j}a_{i,j}(v_i-v_j)^2\right)\left(\sum_{i,j}a_{i,j}(v_i+v_j)^2\right)\ge\left(\sum_{i,j}a_{i,j}|v_i^2-v_j^2|\right)^2
+\]</span></p>
+<p>And hence we have <span class="math display">\[\begin{align*}
+    1-\lambda&amp;\ge\frac{\sum_{i,j}a_{i,j}(v_i-v_j)^2}{2|\vec v|^2}\\
+    &amp;=\frac{\left(\sum_{i,j}a_{i,j}(v_i-v_j)^2\right)\left(\sum_{i,j}a_{i,j}(v_i+v_j)^2\right)}{2|\vec
+v|^2\left(\sum_{i,j}a_{i,j}(v_i+v_j)^2\right)}\\
+    &amp;\ge\frac{Z^2}{2|\vec v|^2\left(2|\vec v|^2+2\vec v^TA\vec
+v\right)}\\
+    &amp;\ge\frac{Z^2}{8|\vec v|^4}
+\end{align*}\]</span></p>
+<p>From which we conclude that <span
+class="math inline">\(Z\ge\sqrt{8(1-\lambda)}|\vec v|^2\)</span>.</p>
+<h2 id="trivia">Trivia</h2>
+<p>This result was later generalized to the case of general reversible
+Markov chains<a href="#fn2" class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a>. In their paper, the authors defined
+the "conductance" of a random walk, which corresponds to edge
+expansion.</p>
+<p>In quantum computational complexity, an important result is the
+<em>QMA-completeness</em> of the <em>2-local hamiltonian problem</em><a
+href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a>. The authors also adopted this idea
+to lowerbound the eigenvalue of a specific matrix.</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Arora S, Barak B. Computational complexity: a modern
+approach[M]. Cambridge University Press, 2009.<a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Sinclair A, Jerrum M. Approximate counting, uniform
+generation and rapidly mixing Markov chains[J]. Information and
+Computation, 1989, 82(1): 93-133.<a href="#fnref2" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Kempe J, Kitaev A, Regev O. The complexity of the local
+Hamiltonian problem[J]. Siam journal on computing, 2006, 35(5):
+1070-1097.<a href="#fnref3" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>Tools</category>
+      </categories>
+      <tags>
+        <tag>expander</tag>
+        <tag>graph</tag>
+        <tag>random walk</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Markdown and $Math$ Test</title>
     <url>/2023/02/11/math-test/</url>
     <content><![CDATA[<h1 id="h1-heading-8-">h1 Heading 8-)</h1>
