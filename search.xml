@@ -1,6 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Algebraic numbers is algebraically closed, proved using elementary linear algebra</title>
+    <url>/2023/02/21/Algebraic-Number/</url>
+    <content><![CDATA[<p>Recall the definition of algebraic numbers: <span
+class="math inline">\(x\)</span> is an algebraic number iff it is a root
+of some non-zero polynomial with rational coefficients.</p>
+<h1 id="definition-of-algebraic-numbers">Definition of Algebraic
+Numbers</h1>
+<blockquote>
+<p>Let <span class="math inline">\(x\in\mathbb C\)</span> be a complex
+number. We call it an algebraic number iff <span
+class="math inline">\(\exists n&gt;0\)</span>, <span
+class="math inline">\(\exists a_0,\cdots,a_n\in\mathbb Q,
+a_n\ne0\)</span>, s.t. <span
+class="math inline">\(\sum_{i=0}^na_nx^n=0\)</span>.</p>
+</blockquote>
+<h1 id="algebraic-number-is-algebraically-closed">Algebraic number is
+algebraically closed</h1>
+<p>The algebraic numbers have an intriguing property: it is
+algebraically closed. That is, the sum, difference, product and quotient
+of two algebraic numbers is again algebraic. Moreover, the roots of a
+non-zero polynomial whose coefficients are algebraic numbers is again
+algebraic.</p>
+<span id="more"></span>
+<h2 id="theorem-1">Theorem 1</h2>
+<blockquote>
+<p>Let <span class="math inline">\(x,y\in\mathbb C\)</span> be some
+algebraic number, where <span class="math inline">\(x\ne0\)</span>. Then
+<span class="math inline">\(x+y\)</span>, <span
+class="math inline">\(xy\)</span>, <span
+class="math inline">\(x^{-1}\)</span> are all algebraic numbers.</p>
+</blockquote>
+<h2 id="theorem-2">Theorem 2</h2>
+<blockquote>
+<p>Let <span class="math inline">\(a_0,\cdots,a_n\in\mathbb C\)</span>
+be some algebraic numbers, where <span
+class="math inline">\(n&gt;0\)</span> and <span
+class="math inline">\(a_n\ne0\)</span> holds. Then all the roots of the
+polynomial <span class="math inline">\(f(x)=\sum_{i=0}^na_nx^n\)</span>
+are algebraic numbers.</p>
+</blockquote>
+<p>Trivial as it sounds, the two theorems might not so easy to prove
+unless you are familiar with field theory. (You can pause now and try to
+prove them yourself!) However, with some matrix tricks, we can prove
+these theorems with just elementary linear algebra.</p>
+<h1 id="from-polynomials-to-matrices">From Polynomials to Matrices</h1>
+<p>Here we introduce our main tool for proving the two theorems: the
+<em>companion matrix</em>.</p>
+<h2 id="definition-of-companion-matrix">Definition of Companion
+Matrix</h2>
+<blockquote>
+<p>For <span class="math inline">\(n&gt;0\)</span>, let <span
+class="math inline">\(f(x)=x^n+\sum_{i=0}^{n-1}a_ix^i\)</span> be a
+polynomial. We define the companion matrix of <span
+class="math inline">\(f\)</span> to be: <span class="math display">\[
+C(f)=\begin{bmatrix}
+  0&amp;0&amp;0&amp;\cdots&amp;0&amp;-a_0\\
+  1&amp;0&amp;0&amp;\cdots&amp;0&amp;-a_1\\
+  0&amp;1&amp;0&amp;\cdots&amp;0&amp;-a_2\\
+  \vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots\\
+  0&amp;0&amp;0&amp;\cdots&amp;1&amp;-a_{n-1}
+\end{bmatrix}
+\]</span></p>
+</blockquote>
+<p>One can verify that the characteristic polynomial of <span
+class="math inline">\(C(f)\)</span> is exactly <span
+class="math inline">\(f\)</span>, thus the eigenvalues of <span
+class="math inline">\(C(f)\)</span> corresponds to the roots of <span
+class="math inline">\(f\)</span>, which leads to the following
+lemma:</p>
+<h2 id="lemma-1">Lemma 1</h2>
+<blockquote>
+<p>Let <span class="math inline">\(x\in\mathbb C\)</span> be a complex
+number. Then <span class="math inline">\(x\)</span> is an algebraic
+number iff <span class="math inline">\(x\)</span> is the eigenvalue of
+some matrix with rational entries.</p>
+</blockquote>
+<h3 id="proof-of-lemma-1">Proof of <a href="#lemma-1">Lemma 1</a></h3>
+<p>For the <em>if</em> part, obviously the the coefficients of the
+characteristic polynomial of a matrix with rational entries are
+rational. Thus <span class="math inline">\(x\)</span> is the root of a
+polynomial with rational coefficient, and <span
+class="math inline">\(x\)</span> is algebraic.<br />
+For the <em>only if</em> part, let <span
+class="math inline">\(f\)</span> be a polynomial with rational
+coefficients such that <span class="math inline">\(f(x)=0\)</span>. Then
+<span class="math inline">\(x\)</span> is the eigenvalue of the
+companion matrix <span class="math inline">\(C(f)\)</span>, which
+obviously has rational entries.</p>
+<h1 id="proof-of-the-theorems">Proof of the Theorems</h1>
+<p>With the tool of matrix in hand, we can now easily prove <a
+href="#theorem-1">Theorem 1</a>:</p>
+<h2 id="proof-of-theorem-1">Proof of <a href="#theorem-1">Theorem
+1</a></h2>
+<p>By <a href="#lemma-1">Lemma 1</a>, there exists some rational
+matrices <span class="math inline">\(G,H\)</span> such that <span
+class="math inline">\(x\)</span> is an eigenvalue of <span
+class="math inline">\(G\)</span>, while <span
+class="math inline">\(y\)</span> is an eigenvalue of <span
+class="math inline">\(H\)</span>. Let <span class="math inline">\(\vec
+u\)</span> and <span class="math inline">\(\vec v\)</span> be the
+respective eigenvectors. Then we have <span class="math display">\[
+(G\otimes I+I\otimes H)\vec u\otimes\vec v=(x+y)\vec u\otimes\vec v
+\]</span> Here <span class="math inline">\(\otimes\)</span> denotes
+tensor product (Kronecker product). We can see that <span
+class="math inline">\((G\otimes I+I\otimes H)\)</span> is a rational
+matrix, and <span class="math inline">\(x+y\)</span> is an eigenvalue of
+it. By <a href="#lemma-1">Lemma 1</a>, <span
+class="math inline">\(x+y\)</span> is an algebraic number.</p>
+<p>Similarly, we have <span class="math display">\[
+(G\otimes H)\vec u\otimes \vec v=xy\vec u\otimes\vec v
+\]</span> Which implies that <span class="math inline">\(xy\)</span> is
+an algebraic number.</p>
+<p>To show that <span class="math inline">\(x^{-1}\)</span> is an
+algebraic number, let <span class="math inline">\(f\)</span> be a
+polynomial such that <span
+class="math inline">\(f(x)=\sum_{i=0}^na_ix^i=0\)</span>, where <span
+class="math inline">\(a_n\ne0\)</span>. By dividing <span
+class="math inline">\(x^n\)</span> from the equality, we have <span
+class="math display">\[
+\sum_{i=0}^na_{n-i}(x^{-1})^i=0
+\]</span> In other words, for the rational polynomial <span
+class="math inline">\(g(t)=\sum_{i=0}^na_{n-i}t^n\)</span>, we have
+<span class="math inline">\(g(x^{-1})=0\)</span>. Notice that <span
+class="math inline">\(g\)</span> is non-zero as <span
+class="math inline">\(a_n\ne0\)</span>. This finishes the proof of <a
+href="#theorem-1">Theorem 1</a>.</p>
+<h2 id="proof-of-theorem-2">Proof of <a href="#theorem-2">Theorem
+2</a></h2>
+<p>We still use matrices as our main weapon, however, the proof is a
+little more involved. Let <span
+class="math inline">\(f(x)=\sum_{i=0}^na_ix^i\)</span> be a polynomial,
+where all <span class="math inline">\(a_i\)</span> are algebraic. By <a
+href="#theorem-1">Theorem 1</a>, the quotient of two algebraic numbers
+is again algebraic, thus we may assume that <span
+class="math inline">\(a_n=1\)</span>. Then let <span
+class="math inline">\(C(f)\)</span> be the companion matrix of <span
+class="math inline">\(f\)</span>: <span class="math display">\[
+C(f)=\begin{bmatrix}
+    0&amp;0&amp;0&amp;\cdots&amp;0&amp;-a_0\\
+    1&amp;0&amp;0&amp;\cdots&amp;0&amp;-a_1\\
+    0&amp;1&amp;0&amp;\cdots&amp;0&amp;-a_2\\
+    \vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots\\
+    0&amp;0&amp;0&amp;\cdots&amp;1&amp;-a_{n-1}
+\end{bmatrix}   
+\]</span> And let <span class="math inline">\(\vec w\)</span> be the
+eigenvector corresponding to the eigenvalue <span
+class="math inline">\(x\)</span>. Our goal is to construct a matrix with
+same eigenvalues as <span class="math inline">\(C(f)\)</span>, however
+having only rational entries. Again, we adopt the idea of tensor
+products: we try to replace each <span
+class="math inline">\(-a_i\)</span> in <span
+class="math inline">\(C(f)\)</span> by a matrix.</p>
+<p>Let <span class="math inline">\(G_i\)</span> be a rational matrix
+such that <span class="math inline">\(a_i\)</span> is an eigenvalue of
+it, and let <span class="math inline">\(\vec{u_i}\)</span> be the
+corresponding eigenvector. (The existence of <span
+class="math inline">\(G_i\)</span> is guarenteed by <a
+href="#lemma-1">Lemma 1</a>). Then we construct <span
+class="math inline">\(H_i\)</span> and <span class="math inline">\(\vec
+v\)</span>: <span class="math display">\[
+\begin{align*}
+    H_i&amp;:=\left(\bigotimes_{j=0}^{i-1}I\right)\otimes
+G_i\otimes\left(\bigotimes_{j=i+1}^{n-1}I\right)\\
+    \vec v&amp;:=u_0\otimes\cdots\otimes u_{n-1}
+\end{align*}
+\]</span> One can verify that <span class="math inline">\(H_i\vec
+v=a_i\vec v\)</span>. Then finally, we construct the block matrix <span
+class="math inline">\(M\)</span>: <span class="math display">\[
+M:=\begin{bmatrix}
+    0&amp;0&amp;0&amp;\cdots&amp;0&amp;-H_0\\
+    I&amp;0&amp;0&amp;\cdots&amp;0&amp;-H_1\\
+    0&amp;I&amp;0&amp;\cdots&amp;0&amp;-H_2\\
+    \vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots\\
+    0&amp;0&amp;0&amp;\cdots&amp;I&amp;-H_{n-1}
+\end{bmatrix}   
+\]</span> Then one can verify that <span class="math inline">\(M\vec
+w\otimes\vec v=x\vec w\otimes\vec v\)</span>. Since <span
+class="math inline">\(H_i\)</span> are all rational, <span
+class="math inline">\(M\)</span> is a rational matrix, and <span
+class="math inline">\(x\)</span> is an eigenvalue of it. Thus by <a
+href="#lemma-1">Lemma 1</a>, <span class="math inline">\(x\)</span> is
+an algebraic number. This finishes our proof of <a
+href="#theorem-2">Theorem 2</a>.</p>
+<h1 id="summary">Summary</h1>
+<p>This elegant proof transforms the roots of polynomials into
+eigenvalues of matrices, and use tensor products to manipulate them
+freely. An alternate proof contains constructions with <a
+href="https://en.wikipedia.org/wiki/Resultant">resultant</a>, however,
+the process is more tedious and less intuitive, and requires some
+knowledge in abstract algebra.</p>
+]]></content>
+      <categories>
+        <category>elegant proof</category>
+      </categories>
+      <tags>
+        <tag>linear algebra</tag>
+        <tag>matrix</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Edge Expansion Implies Spectral Expansion</title>
     <url>/2023/02/11/Expander/</url>
     <content><![CDATA[<p>The idea of the proof is from <a href="#fn1" class="footnote-ref"
@@ -44,6 +244,7 @@ spectral expansion.</p>
 an <span
 class="math inline">\((n,d,1-\frac{\rho^2}2)\)</span>-spectral-expander.</p>
 </blockquote>
+<span id="more"></span>
 <h2 id="proof">Proof</h2>
 <p>The proof is somewhat tricky. Here the main technical obstacle is
 that, the eigenvector of <span class="math inline">\(G\)</span> may not
@@ -155,9 +356,10 @@ role="doc-backlink">↩︎</a></p></li>
 </section>
 ]]></content>
       <categories>
-        <category>Tools</category>
+        <category>tools</category>
       </categories>
       <tags>
+        <tag>matrix</tag>
         <tag>expander</tag>
         <tag>graph</tag>
         <tag>random walk</tag>
@@ -172,6 +374,7 @@ role="doc-backlink">↩︎</a></p></li>
 <h4 id="h4-heading">h4 Heading</h4>
 <h5 id="h5-heading">h5 Heading</h5>
 <h6 id="h6-heading">h6 Heading</h6>
+<span id="more"></span>
 <h2 id="horizontal-rules">Horizontal Rules</h2>
 <hr />
 <hr />

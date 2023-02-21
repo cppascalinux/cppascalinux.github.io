@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cppascalinux.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Recall the definition of algebraic numbers: \(x\) is an algebraic number iff it is a root of some non-zero polynomial with rational coefficients. Definition of Algebraic Numbers  Let \(x\in\mathbb C\)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algebraic numbers is algebraically closed, proved using elementary linear algebra">
+<meta property="og:url" content="http://cppascalinux.github.io/2023/02/21/Algebraic-Number/index.html">
+<meta property="og:site_name" content="cppascalinux&#39;s Blog">
+<meta property="og:description" content="Recall the definition of algebraic numbers: \(x\) is an algebraic number iff it is a root of some non-zero polynomial with rational coefficients. Definition of Algebraic Numbers  Let \(x\in\mathbb C\)">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-21T12:20:29.000Z">
+<meta property="article:modified_time" content="2023-02-21T06:54:23.242Z">
+<meta property="article:author" content="cppascalinux">
+<meta property="article:tag" content="linear algebra">
+<meta property="article:tag" content="matrix">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://cppascalinux.github.io/2023/02/21/Algebraic-Number/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://cppascalinux.github.io/2023/02/21/Algebraic-Number/","path":"2023/02/21/Algebraic-Number/","title":"Algebraic numbers is algebraically closed, proved using elementary linear algebra"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Algebraic numbers is algebraically closed, proved using elementary linear algebra | cppascalinux's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cppascalinux's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">QwQ</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">6</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">3</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#definition-of-algebraic-numbers"><span class="nav-number">1.</span> <span class="nav-text">Definition of Algebraic
+Numbers</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#algebraic-number-is-algebraically-closed"><span class="nav-number">2.</span> <span class="nav-text">Algebraic number is
+algebraically closed</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#theorem-1"><span class="nav-number">2.1.</span> <span class="nav-text">Theorem 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#theorem-2"><span class="nav-number">2.2.</span> <span class="nav-text">Theorem 2</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#from-polynomials-to-matrices"><span class="nav-number">3.</span> <span class="nav-text">From Polynomials to Matrices</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#definition-of-companion-matrix"><span class="nav-number">3.1.</span> <span class="nav-text">Definition of Companion
+Matrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lemma-1"><span class="nav-number">3.2.</span> <span class="nav-text">Lemma 1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#proof-of-lemma-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">Proof of Lemma 1</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#proof-of-the-theorems"><span class="nav-number">4.</span> <span class="nav-text">Proof of the Theorems</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#proof-of-theorem-1"><span class="nav-number">4.1.</span> <span class="nav-text">Proof of Theorem
+1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proof-of-theorem-2"><span class="nav-number">4.2.</span> <span class="nav-text">Proof of Theorem
+2</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number">5.</span> <span class="nav-text">Summary</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">cppascalinux</p>
+  <div class="site-description" itemprop="description">Domestic Longhair</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cppascalinux" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cppascalinux" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cppascalinux@gmail.com" title="E-Mail → mailto:cppascalinux@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://cppascalinux.github.io/2023/02/21/Algebraic-Number/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="cppascalinux">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cppascalinux's Blog">
+      <meta itemprop="description" content="Domestic Longhair">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Algebraic numbers is algebraically closed, proved using elementary linear algebra | cppascalinux's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Algebraic numbers is algebraically closed, proved using elementary linear algebra
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-02-21 12:20:29 / Modified: 06:54:23" itemprop="dateCreated datePublished" datetime="2023-02-21T12:20:29Z">2023-02-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/elegant-proof/" itemprop="url" rel="index"><span itemprop="name">elegant proof</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/02/21/Algebraic-Number/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/02/21/Algebraic-Number/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Recall the definition of algebraic numbers: <span
+class="math inline">\(x\)</span> is an algebraic number iff it is a root
+of some non-zero polynomial with rational coefficients.</p>
+<h1 id="definition-of-algebraic-numbers">Definition of Algebraic
+Numbers</h1>
+<blockquote>
+<p>Let <span class="math inline">\(x\in\mathbb C\)</span> be a complex
+number. We call it an algebraic number iff <span
+class="math inline">\(\exists n&gt;0\)</span>, <span
+class="math inline">\(\exists a_0,\cdots,a_n\in\mathbb Q,
+a_n\ne0\)</span>, s.t. <span
+class="math inline">\(\sum_{i=0}^na_nx^n=0\)</span>.</p>
+</blockquote>
+<h1 id="algebraic-number-is-algebraically-closed">Algebraic number is
+algebraically closed</h1>
+<p>The algebraic numbers have an intriguing property: it is
+algebraically closed. That is, the sum, difference, product and quotient
+of two algebraic numbers is again algebraic. Moreover, the roots of a
+non-zero polynomial whose coefficients are algebraic numbers is again
+algebraic.</p>
+<span id="more"></span>
+<h2 id="theorem-1">Theorem 1</h2>
+<blockquote>
+<p>Let <span class="math inline">\(x,y\in\mathbb C\)</span> be some
+algebraic number, where <span class="math inline">\(x\ne0\)</span>. Then
+<span class="math inline">\(x+y\)</span>, <span
+class="math inline">\(xy\)</span>, <span
+class="math inline">\(x^{-1}\)</span> are all algebraic numbers.</p>
+</blockquote>
+<h2 id="theorem-2">Theorem 2</h2>
+<blockquote>
+<p>Let <span class="math inline">\(a_0,\cdots,a_n\in\mathbb C\)</span>
+be some algebraic numbers, where <span
+class="math inline">\(n&gt;0\)</span> and <span
+class="math inline">\(a_n\ne0\)</span> holds. Then all the roots of the
+polynomial <span class="math inline">\(f(x)=\sum_{i=0}^na_nx^n\)</span>
+are algebraic numbers.</p>
+</blockquote>
+<p>Trivial as it sounds, the two theorems might not so easy to prove
+unless you are familiar with field theory. (You can pause now and try to
+prove them yourself!) However, with some matrix tricks, we can prove
+these theorems with just elementary linear algebra.</p>
+<h1 id="from-polynomials-to-matrices">From Polynomials to Matrices</h1>
+<p>Here we introduce our main tool for proving the two theorems: the
+<em>companion matrix</em>.</p>
+<h2 id="definition-of-companion-matrix">Definition of Companion
+Matrix</h2>
+<blockquote>
+<p>For <span class="math inline">\(n&gt;0\)</span>, let <span
+class="math inline">\(f(x)=x^n+\sum_{i=0}^{n-1}a_ix^i\)</span> be a
+polynomial. We define the companion matrix of <span
+class="math inline">\(f\)</span> to be: <span class="math display">\[
+C(f)=\begin{bmatrix}
+  0&amp;0&amp;0&amp;\cdots&amp;0&amp;-a_0\\
+  1&amp;0&amp;0&amp;\cdots&amp;0&amp;-a_1\\
+  0&amp;1&amp;0&amp;\cdots&amp;0&amp;-a_2\\
+  \vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots\\
+  0&amp;0&amp;0&amp;\cdots&amp;1&amp;-a_{n-1}
+\end{bmatrix}
+\]</span></p>
+</blockquote>
+<p>One can verify that the characteristic polynomial of <span
+class="math inline">\(C(f)\)</span> is exactly <span
+class="math inline">\(f\)</span>, thus the eigenvalues of <span
+class="math inline">\(C(f)\)</span> corresponds to the roots of <span
+class="math inline">\(f\)</span>, which leads to the following
+lemma:</p>
+<h2 id="lemma-1">Lemma 1</h2>
+<blockquote>
+<p>Let <span class="math inline">\(x\in\mathbb C\)</span> be a complex
+number. Then <span class="math inline">\(x\)</span> is an algebraic
+number iff <span class="math inline">\(x\)</span> is the eigenvalue of
+some matrix with rational entries.</p>
+</blockquote>
+<h3 id="proof-of-lemma-1">Proof of <a href="#lemma-1">Lemma 1</a></h3>
+<p>For the <em>if</em> part, obviously the the coefficients of the
+characteristic polynomial of a matrix with rational entries are
+rational. Thus <span class="math inline">\(x\)</span> is the root of a
+polynomial with rational coefficient, and <span
+class="math inline">\(x\)</span> is algebraic.<br />
+For the <em>only if</em> part, let <span
+class="math inline">\(f\)</span> be a polynomial with rational
+coefficients such that <span class="math inline">\(f(x)=0\)</span>. Then
+<span class="math inline">\(x\)</span> is the eigenvalue of the
+companion matrix <span class="math inline">\(C(f)\)</span>, which
+obviously has rational entries.</p>
+<h1 id="proof-of-the-theorems">Proof of the Theorems</h1>
+<p>With the tool of matrix in hand, we can now easily prove <a
+href="#theorem-1">Theorem 1</a>:</p>
+<h2 id="proof-of-theorem-1">Proof of <a href="#theorem-1">Theorem
+1</a></h2>
+<p>By <a href="#lemma-1">Lemma 1</a>, there exists some rational
+matrices <span class="math inline">\(G,H\)</span> such that <span
+class="math inline">\(x\)</span> is an eigenvalue of <span
+class="math inline">\(G\)</span>, while <span
+class="math inline">\(y\)</span> is an eigenvalue of <span
+class="math inline">\(H\)</span>. Let <span class="math inline">\(\vec
+u\)</span> and <span class="math inline">\(\vec v\)</span> be the
+respective eigenvectors. Then we have <span class="math display">\[
+(G\otimes I+I\otimes H)\vec u\otimes\vec v=(x+y)\vec u\otimes\vec v
+\]</span> Here <span class="math inline">\(\otimes\)</span> denotes
+tensor product (Kronecker product). We can see that <span
+class="math inline">\((G\otimes I+I\otimes H)\)</span> is a rational
+matrix, and <span class="math inline">\(x+y\)</span> is an eigenvalue of
+it. By <a href="#lemma-1">Lemma 1</a>, <span
+class="math inline">\(x+y\)</span> is an algebraic number.</p>
+<p>Similarly, we have <span class="math display">\[
+(G\otimes H)\vec u\otimes \vec v=xy\vec u\otimes\vec v
+\]</span> Which implies that <span class="math inline">\(xy\)</span> is
+an algebraic number.</p>
+<p>To show that <span class="math inline">\(x^{-1}\)</span> is an
+algebraic number, let <span class="math inline">\(f\)</span> be a
+polynomial such that <span
+class="math inline">\(f(x)=\sum_{i=0}^na_ix^i=0\)</span>, where <span
+class="math inline">\(a_n\ne0\)</span>. By dividing <span
+class="math inline">\(x^n\)</span> from the equality, we have <span
+class="math display">\[
+\sum_{i=0}^na_{n-i}(x^{-1})^i=0
+\]</span> In other words, for the rational polynomial <span
+class="math inline">\(g(t)=\sum_{i=0}^na_{n-i}t^n\)</span>, we have
+<span class="math inline">\(g(x^{-1})=0\)</span>. Notice that <span
+class="math inline">\(g\)</span> is non-zero as <span
+class="math inline">\(a_n\ne0\)</span>. This finishes the proof of <a
+href="#theorem-1">Theorem 1</a>.</p>
+<h2 id="proof-of-theorem-2">Proof of <a href="#theorem-2">Theorem
+2</a></h2>
+<p>We still use matrices as our main weapon, however, the proof is a
+little more involved. Let <span
+class="math inline">\(f(x)=\sum_{i=0}^na_ix^i\)</span> be a polynomial,
+where all <span class="math inline">\(a_i\)</span> are algebraic. By <a
+href="#theorem-1">Theorem 1</a>, the quotient of two algebraic numbers
+is again algebraic, thus we may assume that <span
+class="math inline">\(a_n=1\)</span>. Then let <span
+class="math inline">\(C(f)\)</span> be the companion matrix of <span
+class="math inline">\(f\)</span>: <span class="math display">\[
+C(f)=\begin{bmatrix}
+    0&amp;0&amp;0&amp;\cdots&amp;0&amp;-a_0\\
+    1&amp;0&amp;0&amp;\cdots&amp;0&amp;-a_1\\
+    0&amp;1&amp;0&amp;\cdots&amp;0&amp;-a_2\\
+    \vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots\\
+    0&amp;0&amp;0&amp;\cdots&amp;1&amp;-a_{n-1}
+\end{bmatrix}   
+\]</span> And let <span class="math inline">\(\vec w\)</span> be the
+eigenvector corresponding to the eigenvalue <span
+class="math inline">\(x\)</span>. Our goal is to construct a matrix with
+same eigenvalues as <span class="math inline">\(C(f)\)</span>, however
+having only rational entries. Again, we adopt the idea of tensor
+products: we try to replace each <span
+class="math inline">\(-a_i\)</span> in <span
+class="math inline">\(C(f)\)</span> by a matrix.</p>
+<p>Let <span class="math inline">\(G_i\)</span> be a rational matrix
+such that <span class="math inline">\(a_i\)</span> is an eigenvalue of
+it, and let <span class="math inline">\(\vec{u_i}\)</span> be the
+corresponding eigenvector. (The existence of <span
+class="math inline">\(G_i\)</span> is guarenteed by <a
+href="#lemma-1">Lemma 1</a>). Then we construct <span
+class="math inline">\(H_i\)</span> and <span class="math inline">\(\vec
+v\)</span>: <span class="math display">\[
+\begin{align*}
+    H_i&amp;:=\left(\bigotimes_{j=0}^{i-1}I\right)\otimes
+G_i\otimes\left(\bigotimes_{j=i+1}^{n-1}I\right)\\
+    \vec v&amp;:=u_0\otimes\cdots\otimes u_{n-1}
+\end{align*}
+\]</span> One can verify that <span class="math inline">\(H_i\vec
+v=a_i\vec v\)</span>. Then finally, we construct the block matrix <span
+class="math inline">\(M\)</span>: <span class="math display">\[
+M:=\begin{bmatrix}
+    0&amp;0&amp;0&amp;\cdots&amp;0&amp;-H_0\\
+    I&amp;0&amp;0&amp;\cdots&amp;0&amp;-H_1\\
+    0&amp;I&amp;0&amp;\cdots&amp;0&amp;-H_2\\
+    \vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots\\
+    0&amp;0&amp;0&amp;\cdots&amp;I&amp;-H_{n-1}
+\end{bmatrix}   
+\]</span> Then one can verify that <span class="math inline">\(M\vec
+w\otimes\vec v=x\vec w\otimes\vec v\)</span>. Since <span
+class="math inline">\(H_i\)</span> are all rational, <span
+class="math inline">\(M\)</span> is a rational matrix, and <span
+class="math inline">\(x\)</span> is an eigenvalue of it. Thus by <a
+href="#lemma-1">Lemma 1</a>, <span class="math inline">\(x\)</span> is
+an algebraic number. This finishes our proof of <a
+href="#theorem-2">Theorem 2</a>.</p>
+<h1 id="summary">Summary</h1>
+<p>This elegant proof transforms the roots of polynomials into
+eigenvalues of matrices, and use tensor products to manipulate them
+freely. An alternate proof contains constructions with <a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Resultant">resultant</a>, however,
+the process is more tedious and less intuitive, and requires some
+knowledge in abstract algebra.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>cppascalinux
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://cppascalinux.github.io/2023/02/21/Algebraic-Number/" title="Algebraic numbers is algebraically closed, proved using elementary linear algebra">http://cppascalinux.github.io/2023/02/21/Algebraic-Number/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/linear-algebra/" rel="tag"><i class="fa fa-tag"></i> linear algebra</a>
+              <a href="/tags/matrix/" rel="tag"><i class="fa fa-tag"></i> matrix</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/11/Expander/" rel="prev" title="Edge Expansion Implies Spectral Expansion">
+                  <i class="fa fa-chevron-left"></i> Edge Expansion Implies Spectral Expansion
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cppascalinux</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">3k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9 mins.</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"cppascalinux","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
