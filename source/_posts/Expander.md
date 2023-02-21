@@ -1,8 +1,8 @@
 ---
 title: Edge Expansion Implies Spectral Expansion
 date: 2023-02-11 20:35:24
-tags: [expander, graph, random walk]
-categories: Tools
+tags: [expander, graph, random walk, matrix]
+categories: tools
 ---
 
 The idea of the proof is from [^1], page 429-431.
@@ -25,6 +25,8 @@ In fact, we can show that the two expanders are somewhat "equivalent", i.e. spec
 
 ## Theorem
 > An $(n,d,\rho)$-edge-expander is an $(n,d,1-\frac{\rho^2}2)$-spectral-expander.
+
+<!--more-->
 
 ## Proof
 The proof is somewhat tricky. Here the main technical obstacle is that, the eigenvector of $G$ may not be distributed evenly, thus cannot be used to directly estimate the edge expansion. (Try prove it yourself and you'll understand what I mean!)
