@@ -9,6 +9,8 @@ categories: quantum
 
 Let's start with the *SAT* problem: suppose we are given a boolean SAT formula with $n$ variables and $poly(n)$ clauses, and we want to know whether there exists a satisfiying assignment. This problem is known to be *NP-complete*, thus is generally believed to be hard to solve on a classical computer. The *exponential time hypothesis* states that satisfiability of SAT cannot be solved in $2^{o(n)}$ time. However, with *Grover's algorithm* on a quantum computer, one can determine the existence of satisfying assignment, or even find one, within time $O\left(2^{\frac n2}\right)$! In fact, for any search problem with $N$ candidates and $M$ solutions, *Grover's algorithm* can find one solution with $O\left(\sqrt{\frac NM}\right)$ operations, while a classical algorithm usually takes $O(\frac NM)$ operations.
 
+<!--more-->
+
 This implies that quantum computers are inherently much more powerful that classical computers, right? Well, yes but no. On one hand, *Grover's algorithm* does offer a sqaure root speed up over classical algorithms. On the other hand, however, one can prove that for a general unstructured search problem with $N$ candidates and $M$ solutions, no quantum algorithms take less than $\Theta\left(\sqrt{\frac NM}\right)$ operations to find a solution! This can be huge disappointment for quantum enthusiasts, who might believe that quantum computers might offer a super-polynomial or even exponential speed up over classical computers for general unstructured problems. We will dive into this topic in the following paragraphs.
 
 # Basic facts
