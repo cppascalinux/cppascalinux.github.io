@@ -670,6 +670,7 @@ candidates and <span class="math inline">\(M\)</span> solutions,
 class="math inline">\(O\left(\sqrt{\frac NM}\right)\)</span> operations,
 while a classical algorithm usually takes <span
 class="math inline">\(O(\frac NM)\)</span> operations.</p>
+<span id="more"></span>
 <p>This implies that quantum computers are inherently much more powerful
 that classical computers, right? Well, yes but no. On one hand,
 <em>Grover's algorithm</em> does offer a sqaure root speed up over
