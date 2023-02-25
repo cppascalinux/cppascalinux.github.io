@@ -91,7 +91,7 @@ Let $G_i$ be a rational matrix such that $a_i$ is an eigenvalue of it, and let $
 $$
 \begin{align*}
 	H_i&:=\left(\bigotimes_{j=0}^{i-1}I\right)\otimes G_i\otimes\left(\bigotimes_{j=i+1}^{n-1}I\right)\\
-	\vec v&:=u_0\otimes\cdots\otimes u_{n-1}
+	\vec v&:=\vec{u_0}\otimes\cdots\otimes \vec{u_{n-1}}
 \end{align*}
 $$
 One can verify that $H_i\vec v=a_i\vec v$. Then finally, we construct the block matrix $M$:
