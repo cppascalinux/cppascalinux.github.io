@@ -19,25 +19,30 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"cppascalinux.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Domestic Longhair">
-<meta property="og:type" content="website">
-<meta property="og:title" content="cppascalinux&#39;s Blog">
-<meta property="og:url" content="http://cppascalinux.github.io/index.html">
+    <meta name="description" content="Introduction Let&#39;s start with the SAT problem: suppose we are given a boolean SAT formula with \(n\) variables and \(poly(n)\) clauses, and we want to know whether there exists a satisfiying assignmen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Optimality of Grover&#39;s Algorithm">
+<meta property="og:url" content="http://cppascalinux.github.io/2023/02/24/optimal-grover/index.html">
 <meta property="og:site_name" content="cppascalinux&#39;s Blog">
-<meta property="og:description" content="Domestic Longhair">
+<meta property="og:description" content="Introduction Let&#39;s start with the SAT problem: suppose we are given a boolean SAT formula with \(n\) variables and \(poly(n)\) clauses, and we want to know whether there exists a satisfiying assignmen">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-24T23:10:56.000Z">
+<meta property="article:modified_time" content="2023-02-25T12:29:24.085Z">
 <meta property="article:author" content="cppascalinux">
+<meta property="article:tag" content="quantum">
+<meta property="article:tag" content="linear algeket">
+<meta property="article:tag" content="algorithm">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://cppascalinux.github.io/">
+<link rel="canonical" href="http://cppascalinux.github.io/2023/02/24/optimal-grover/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://cppascalinux.github.io/2023/02/24/optimal-grover/","path":"2023/02/24/optimal-grover/","title":"Optimality of Grover's Algorithm"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>cppascalinux's Blog</title>
+<title>Optimality of Grover's Algorithm | cppascalinux's Blog</title>
   
 
 
@@ -70,7 +75,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">cppascalinux's Blog</h1>
+      <p class="site-title">cppascalinux's Blog</p>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">QwQ</p>
@@ -124,7 +129,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -137,6 +142,11 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#basic-facts"><span class="nav-number">2.</span> <span class="nav-text">Basic facts</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#definition-of-general-search-problems"><span class="nav-number">2.1.</span> <span class="nav-text">Definition of general
+search problems</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hardness-of-general-search-problems"><span class="nav-number">2.2.</span> <span class="nav-text">Hardness of general search
+problems</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#optimality-of-grovers-algorithm"><span class="nav-number">3.</span> <span class="nav-text">Optimality of Grover&#39;s
+algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lemma-1"><span class="nav-number">3.1.</span> <span class="nav-text">Lemma 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proof-of-lemma-1"><span class="nav-number">3.2.</span> <span class="nav-text">Proof of Lemma 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#theorem-1"><span class="nav-number">3.3.</span> <span class="nav-text">Theorem 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proof-of-theorem-1"><span class="nav-number">3.4.</span> <span class="nav-text">Proof of Theorem
+1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#upperbound-of-d_w"><span class="nav-number">3.4.1.</span> <span class="nav-text">Upperbound of \(D_W\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lowerbound-of-d_w"><span class="nav-number">3.4.2.</span> <span class="nav-text">Lowerbound of \(D_W\)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number">4.</span> <span class="nav-text">Summary</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,16 +197,17 @@
 
     </div>
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://cppascalinux.github.io/2023/02/24/optimal-grover/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -210,13 +221,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | cppascalinux's Blog">
+      <meta itemprop="name" content="Optimality of Grover's Algorithm | cppascalinux's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/24/optimal-grover/" class="post-title-link" itemprop="url">Optimality of Grover's Algorithm</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Optimality of Grover's Algorithm
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -246,6 +257,13 @@
     </span>
 
   
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
   
   <span class="post-meta-item">
     
@@ -284,7 +302,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="introduction">Introduction</h1>
+        <h1 id="introduction">Introduction</h1>
 <p>Let's start with the <em>SAT</em> problem: suppose we are given a
 boolean SAT formula with <span class="math inline">\(n\)</span>
 variables and <span class="math inline">\(poly(n)\)</span> clauses, and
@@ -551,7 +569,6 @@ know how to do the reduction, please contact me, and I'd like to learn
 about it!) So I spent another afternoon modifying the proof so that it
 applys to standard oracle, though making the proof more tedious.</p>
 
-      
     </div>
 
     
@@ -559,435 +576,40 @@ applys to standard oracle, though making the proof more tedious.</p>
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>cppascalinux
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://cppascalinux.github.io/2023/02/24/optimal-grover/" title="Optimality of Grover&#39;s Algorithm">http://cppascalinux.github.io/2023/02/24/optimal-grover/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-SA</a> unless stating additionally.
+  </li>
+</ul>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/quantum/" rel="tag"><i class="fa fa-tag"></i> quantum</a>
+              <a href="/tags/linear-algeket/" rel="tag"><i class="fa fa-tag"></i> linear algeket</a>
+              <a href="/tags/algorithm/" rel="tag"><i class="fa fa-tag"></i> algorithm</a>
+          </div>
 
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://cppascalinux.github.io/2023/02/21/Algebraic-Number/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="cppascalinux">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cppascalinux's Blog">
-      <meta itemprop="description" content="Domestic Longhair">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | cppascalinux's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/21/Algebraic-Number/" class="post-title-link" itemprop="url">Algebraic numbers is algebraically closed, proved using elementary linear algebra</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-21 12:20:29" itemprop="dateCreated datePublished" datetime="2023-02-21T12:20:29Z">2023-02-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-02-25 12:29:24" itemprop="dateModified" datetime="2023-02-25T12:29:24Z">2023-02-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/elegant-proof/" itemprop="url" rel="index"><span itemprop="name">elegant proof</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2023/02/21/Algebraic-Number/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/02/21/Algebraic-Number/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Recall the definition of algebraic numbers: <span
-class="math inline">\(x\)</span> is an algebraic number iff it is a root
-of some non-zero polynomial with rational coefficients.</p>
-<h1 id="definition-of-algebraic-numbers">Definition of Algebraic
-Numbers</h1>
-<blockquote>
-<p>Let <span class="math inline">\(x\in\mathbb C\)</span> be a complex
-number. We call it an algebraic number iff <span
-class="math inline">\(\exists n&gt;0\)</span>, <span
-class="math inline">\(\exists a_0,\cdots,a_n\in\mathbb Q,
-a_n\ne0\)</span>, s.t. <span
-class="math inline">\(\sum_{i=0}^na_nx^n=0\)</span>.</p>
-</blockquote>
-<h1 id="algebraic-number-is-algebraically-closed">Algebraic number is
-algebraically closed</h1>
-<p>The algebraic numbers have an intriguing property: it is
-algebraically closed. That is, the sum, difference, product and quotient
-of two algebraic numbers is again algebraic. Moreover, the roots of a
-non-zero polynomial whose coefficients are algebraic numbers is again
-algebraic.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/02/21/Algebraic-Number/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://cppascalinux.github.io/2023/02/11/Expander/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="cppascalinux">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cppascalinux's Blog">
-      <meta itemprop="description" content="Domestic Longhair">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | cppascalinux's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/11/Expander/" class="post-title-link" itemprop="url">Edge Expansion Implies Spectral Expansion</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-11 20:35:24" itemprop="dateCreated datePublished" datetime="2023-02-11T20:35:24Z">2023-02-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-02-25 12:29:24" itemprop="dateModified" datetime="2023-02-25T12:29:24Z">2023-02-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/tools/" itemprop="url" rel="index"><span itemprop="name">tools</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2023/02/11/Expander/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/02/11/Expander/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>903</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>The idea of the proof is from <a href="#fn1" class="footnote-ref"
-id="fnref1" role="doc-noteref"><sup>1</sup></a>, page 429-431.</p>
-<h1 id="definition">Definition</h1>
-<h2 id="spectral-expander">Spectral Expander</h2>
-<blockquote>
-<p>Let <span class="math inline">\(G\)</span> be an <span
-class="math inline">\(n\)</span>-vertex <span
-class="math inline">\(d\)</span>-regular undirected graph. Let <span
-class="math inline">\(A\)</span> be its random walk matrix, i.e. <span
-class="math inline">\(a_{i,j}=\frac 1d |E(i,j)|\)</span>. One can see
-that the largest eigenvalue of <span class="math inline">\(A\)</span> is
-<span class="math inline">\(1\)</span>. We define <span
-class="math inline">\(\lambda(G)\)</span> as the second-largest
-eigenvalue of <span class="math inline">\(H\)</span>. If <span
-class="math inline">\(\lambda(G)\le\lambda\)</span> for some <span
-class="math inline">\(\lambda&lt;1\)</span>, then we say <span
-class="math inline">\(G\)</span> is an <span
-class="math inline">\((n,d,\lambda)\)</span><em>-spectral-expander</em>.</p>
-</blockquote>
-<h2 id="edge-expander">Edge Expander</h2>
-<blockquote>
-<p>Let <span class="math inline">\(G=(V,E)\)</span> be an <span
-class="math inline">\(n\)</span>-vertex <span
-class="math inline">\(d\)</span>-regular undirected graph. We call it an
-<span class="math inline">\((n,d,\rho)\)</span><em>-edge-expander</em>
-iff <span class="math display">\[
-\forall S\subset V, |S|\le\frac n2\implies E(S,\bar S)\ge\rho d|S|
-\]</span></p>
-</blockquote>
-<h1 id="edge-expansion-implies-spectral-expansion">Edge Expansion
-Implies Spectral Expansion</h1>
-<p>In fact, we can show that the two expanders are somewhat
-"equivalent", i.e. spectral expansion implies edge expansion and vice
-versa. Here we focus on the hard direction: edge expansion implies
-spectral expansion.</p>
-<h2 id="theorem">Theorem</h2>
-<blockquote>
-<p>An <span class="math inline">\((n,d,\rho)\)</span>-edge-expander is
-an <span
-class="math inline">\((n,d,1-\frac{\rho^2}2)\)</span>-spectral-expander.</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/02/11/Expander/#more" rel="contents">
-                Read more &raquo;
-              </a>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/21/Algebraic-Number/" rel="prev" title="Algebraic numbers is algebraically closed, proved using elementary linear algebra">
+                  <i class="fa fa-chevron-left"></i> Algebraic numbers is algebraically closed, proved using elementary linear algebra
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://cppascalinux.github.io/2023/02/11/math-test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="cppascalinux">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="cppascalinux's Blog">
-      <meta itemprop="description" content="Domestic Longhair">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | cppascalinux's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/11/math-test/" class="post-title-link" itemprop="url">Markdown and $Math$ Test</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-11 17:51:33" itemprop="dateCreated datePublished" datetime="2023-02-11T17:51:33Z">2023-02-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-02-25 12:29:24" itemprop="dateModified" datetime="2023-02-25T12:29:24Z">2023-02-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2023/02/11/math-test/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/02/11/math-test/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>582</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="h1-heading-8-">h1 Heading 8-)</h1>
-<h2 id="h2-heading">h2 Heading</h2>
-<h3 id="h3-heading">h3 Heading</h3>
-<h4 id="h4-heading">h4 Heading</h4>
-<h5 id="h5-heading">h5 Heading</h5>
-<h6 id="h6-heading">h6 Heading</h6>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/02/11/math-test/#more" rel="contents">
-                Read more &raquo;
-              </a>
+            <div class="post-nav-item">
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          </div>
     </footer>
   </article>
 </div>
@@ -996,6 +618,12 @@ class="math inline">\((n,d,1-\frac{\rho^2}2)\)</span>-spectral-expander.</p>
 
 
 
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
 </div>
   </main>
 

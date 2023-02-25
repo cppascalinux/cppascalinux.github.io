@@ -164,7 +164,7 @@ v\)</span>: <span class="math display">\[
 \begin{align*}
     H_i&amp;:=\left(\bigotimes_{j=0}^{i-1}I\right)\otimes
 G_i\otimes\left(\bigotimes_{j=i+1}^{n-1}I\right)\\
-    \vec v&amp;:=u_0\otimes\cdots\otimes u_{n-1}
+    \vec v&amp;:=\vec{u_0}\otimes\cdots\otimes \vec{u_{n-1}}
 \end{align*}
 \]</span> One can verify that <span class="math inline">\(H_i\vec
 v=a_i\vec v\)</span>. Then finally, we construct the block matrix <span
@@ -647,6 +647,285 @@ role="doc-backlink">↩︎</a></p></li>
       </categories>
       <tags>
         <tag>test</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Optimality of Grover&#39;s Algorithm</title>
+    <url>/2023/02/24/optimal-grover/</url>
+    <content><![CDATA[<h1 id="introduction">Introduction</h1>
+<p>Let's start with the <em>SAT</em> problem: suppose we are given a
+boolean SAT formula with <span class="math inline">\(n\)</span>
+variables and <span class="math inline">\(poly(n)\)</span> clauses, and
+we want to know whether there exists a satisfiying assignment. This
+problem is known to be <em>NP-complete</em>, thus is generally believed
+to be hard to solve on a classical computer. The <em>exponential time
+hypothesis</em> states that satisfiability of SAT cannot be solved in
+<span class="math inline">\(2^{o(n)}\)</span> time. However, with
+<em>Grover's algorithm</em> on a quantum computer, one can determine the
+existence of satisfying assignment, or even find one, within time <span
+class="math inline">\(O\left(2^{\frac n2}\right)\)</span>! In fact, for
+any search problem with <span class="math inline">\(N\)</span>
+candidates and <span class="math inline">\(M\)</span> solutions,
+<em>Grover's algorithm</em> can find one solution with <span
+class="math inline">\(O\left(\sqrt{\frac NM}\right)\)</span> operations,
+while a classical algorithm usually takes <span
+class="math inline">\(O(\frac NM)\)</span> operations.</p>
+<p>This implies that quantum computers are inherently much more powerful
+that classical computers, right? Well, yes but no. On one hand,
+<em>Grover's algorithm</em> does offer a sqaure root speed up over
+classical algorithms. On the other hand, however, one can prove that for
+a general unstructured search problem with <span
+class="math inline">\(N\)</span> candidates and <span
+class="math inline">\(M\)</span> solutions, no quantum algorithms take
+less than <span class="math inline">\(\Theta\left(\sqrt{\frac
+NM}\right)\)</span> operations to find a solution! This can be huge
+disappointment for quantum enthusiasts, who might believe that quantum
+computers might offer a super-polynomial or even exponential speed up
+over classical computers for general unstructured problems. We will dive
+into this topic in the following paragraphs.</p>
+<h1 id="basic-facts">Basic facts</h1>
+<h2 id="definition-of-general-search-problems">Definition of general
+search problems</h2>
+<blockquote>
+<p>Let <span class="math inline">\(S=\{0,1\}^n\)</span> be the search
+space, and <span class="math inline">\(R\subset S\)</span> be the
+solutions, we define <span class="math inline">\(N=|S|,M=|R|\)</span>.
+Let <span class="math inline">\(f_R:S\to\{0,1\}\)</span> be a function
+that checks whether a given solution is valid, i.e. <span
+class="math inline">\(f_R(x)=1\iff x\in R\)</span>. To find a solution,
+we are allowed to query <span class="math inline">\(f_R\)</span> as an
+oracle in our algorithm design. (For a quantum algorithm, we are given
+an "oracle operation" <span class="math inline">\(O_R\)</span> such that
+<span class="math inline">\(O_R\ket x\ket b=\ket x\ket{b\oplus
+f_R(x)}\)</span>) The efficiency is measured by the number of oracle
+queries.</p>
+</blockquote>
+<h2 id="hardness-of-general-search-problems">Hardness of general search
+problems</h2>
+<p>With no other assumptions about the structure of the problem, the
+best a classical algorithm can do is to guess a solution randomly.
+Obviously it takes <span class="math inline">\(\Theta\left(\frac
+NM\right)\)</span> oracle queries on average to find a solution.
+However, for a quantum computer, it only takes <span
+class="math inline">\(\Theta\left(\sqrt{\frac NM}\right)\)</span> oracle
+queries to do so, using <em>Grover's algorithm</em>. The procedure of
+the algorithm is left out in this post, and you are encouraged to check
+it out yourself.</p>
+<h1 id="optimality-of-grovers-algorithm">Optimality of Grover's
+algorithm</h1>
+<p>First, we introduce a lemma to bound the sum of vector norms:</p>
+<h2 id="lemma-1">Lemma 1</h2>
+<blockquote>
+<p>Let <span class="math inline">\(\{\alpha_i\}\)</span> and <span
+class="math inline">\(\{\beta_i\}\)</span> be some finite sequence of
+vectors in a inner product space. Then we have <span
+class="math display">\[\begin{align}
+  \sum_i\|\alpha_i+\beta_i\|^2&amp;\le\left(\sqrt{\sum_i\|\alpha_i\|^2}+\sqrt{\sum_i\|\beta_i\|^2}\right)^2\\
+  \sum_i\|\alpha_i+\beta_i\|^2&amp;\ge\left(\sqrt{\sum_i\|\alpha_i\|^2}-\sqrt{\sum_i\|\beta_i\|^2}\right)^2
+\end{align}\]</span></p>
+</blockquote>
+<h2 id="proof-of-lemma-1">Proof of <a href="#lemma-1">Lemma 1</a></h2>
+<p>By the triangle inequality, we have</p>
+<p><span class="math display">\[\begin{align}
+    \sum_i\|\alpha_i+\beta_i\|^2
+    &amp;\le\sum_i(\|\alpha_i\|+\|\beta_i\|)^2\\
+    &amp;=\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2+2\sum_i\|\alpha_i\|\|\beta_i\|
+\end{align}\]</span></p>
+<p>Then we apply Cauchy-Schwarz inequality on the third term:</p>
+<p><span class="math display">\[\begin{align}
+    \sum_i\|\alpha_i+\beta_i\|^2
+    &amp;\le\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2+2\sqrt{\sum_i\|\alpha_i\|^2}\sqrt{\sum_i\|\beta_i\|^2}\\
+    &amp;=\left(\sqrt{\sum_i\|\alpha_i\|^2}+\sqrt{\sum_i\|\beta_i\|^2}\right)^2
+\end{align}\]</span></p>
+<p>The other side is similar:</p>
+<p><span class="math display">\[\begin{align}
+    \sum_i\|\alpha_i+\beta_i\|^2
+    &amp;\ge\sum_i(\|\alpha_i\|-\|\beta_i\|)^2\\
+    &amp;=\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2-2\sum_i\|\alpha_i\|\|\beta_i\|\\
+    &amp;\ge\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2-2\sqrt{\sum_i\|\alpha_i\|^2}\sqrt{\sum_i\|\beta_i\|^2}\\
+    &amp;=\left(\sqrt{\sum_i\|\alpha_i\|^2}-\sqrt{\sum_i\|\beta_i\|^2}\right)^2
+\end{align}\]</span></p>
+<p>Now we are going to prove the main result:</p>
+<h2 id="theorem-1">Theorem 1</h2>
+<blockquote>
+<p>All quantum algorithms that find a solution with <span
+class="math inline">\(O(1)\)</span> probability requires <span
+class="math inline">\(\Omega\left(\sqrt{\frac NM}\right)\)</span> oracle
+queries.</p>
+</blockquote>
+<h2 id="proof-of-theorem-1">Proof of <a href="#theorem-1">Theorem
+1</a></h2>
+<p>Without loss of generality, we may assume that the quantum algorithm
+uses <span class="math inline">\(m\)</span> qubits for some <span
+class="math inline">\(m&gt;n\)</span>. It applies <span
+class="math inline">\(W\)</span> unitary operations, interleaved with
+<span class="math inline">\(W\)</span> oracle operations. More
+specifically, let <span class="math inline">\(\ket\psi\)</span> be the
+initial state of the register, we compute <span
+class="math inline">\(\ket{\psi_W^R}:=U_WO_RU_{W-1}O_R\cdots
+U_1O_R\ket\psi\)</span>, and then measure the first <span
+class="math inline">\(n\)</span> qubits of <span
+class="math inline">\(\ket{\psi_W^R}\)</span> as an answer. We may
+assume that the oracle queries are done on the first <span
+class="math inline">\(n\)</span> qubits, and the result is XORed with
+the <span class="math inline">\((n+1)\)</span>'th qubit. (Otherwise we
+can "swap" the queried qubits with the first <span
+class="math inline">\((n+1)\)</span> qubits, and then swap them back
+after the query, as there is no limit on the unitary operations we
+apply.)</p>
+<p>We define <span class="math display">\[\begin{align}
+    \ket{\psi_k^R}&amp;:=U_kO_RU_{k-1}O_R\cdots U_1O_R\ket\psi\\
+    \ket{\psi_k}&amp;:=U_kU_{k-1}\cdots U_1\ket\psi\\
+    D_k&amp;:=\sum_{R\subset S}\left\|\psi_k^R-\psi_k\right\|^2
+\end{align}\]</span></p>
+<h3 id="upperbound-of-d_w">Upperbound of <span
+class="math inline">\(D_W\)</span></h3>
+<p>For the first half of the proof, we upperbound <span
+class="math inline">\(D_k\)</span> by <span
+class="math inline">\(4k^2\binom{N-1}{M-1}\)</span> using induction:</p>
+<p><span class="math display">\[\begin{align}
+    D_{k+1}
+    &amp;=\sum_{R\subset
+S}\left\|U_{k+1}O_R\psi_k^R-U_{k+1}\psi_k\right\|^2\\
+    &amp;=\sum_{R\subset S}\left\|O_R\psi_k^R-\psi_k\right\|^2\\
+    &amp;=\sum_{R\subset
+S}\left\|O_R(\psi_k^R-\psi_k)+(O_R-I)\psi_k\right\|^2\\
+\end{align}\]</span></p>
+<p>Notice that <span class="math inline">\(O_R\)</span> and <span
+class="math inline">\(I\)</span> can be written as <span
+class="math display">\[\begin{align}
+    O_R&amp;=\sum_{x\notin R}\ket x\bra x\otimes I\otimes I+\sum_{x\in
+R}\ket x\bra x\otimes X\otimes I\\
+    I&amp;=\sum_{x\notin R}\ket x\bra x\otimes I\otimes I+\sum_{x\in
+R}\ket x\bra x\otimes I\otimes I
+\end{align}\]</span></p>
+<p>Therefore we have <span class="math display">\[\begin{align}
+    D_{k+1}
+    &amp;=\sum_{R\subset S}\left\|O_R(\psi_k^R-\psi_k)+\left(\sum_{x\in
+R}\ket x\bra x\otimes(X-I)\otimes I\right)\psi_k\right\|^2
+\end{align}\]</span></p>
+<p>To apply <a href="lemma-1">Lemma 1</a>, we upper bound the first
+term:</p>
+<p><span class="math display">\[\begin{align}
+    \sum_{R\subset S}\left\|O_R(\psi_k^R-\psi_k)\right\|^2
+    &amp;=\sum_{R\subset S}\left\|(\psi_k^R-\psi_k)\right\|^2\\
+    &amp;=D_k\\
+\end{align}\]</span></p>
+<p>and the second term:</p>
+<p><span class="math display">\[\begin{align}
+    &amp;\sum_{R\subset S}\left\|\left(\sum_{x\in R}\ket x\bra
+x\otimes(X-I)\otimes I\right)\psi_k\right\|^2\\
+    &amp;=\sum_{R\subset S}\sum_{x\in R}\braket{\psi_k|(\ket x\bra
+x\otimes(2I-2X)\otimes I)|\psi_k}\\
+    &amp;=2\binom{N-1}{M-1}\sum_{x\in S}\braket{\psi_k|(\ket x\bra
+x\otimes(I-X))|\psi_k}\\
+    &amp;=2\binom{N-1}{M-1}(\braket{\psi_k|\psi_k}-\braket{\psi_k|I\otimes
+X\otimes I|\psi_k})\\
+    &amp;\le4\binom{N-1}{M-1}
+\end{align}\]</span></p>
+<p>By induction, <span
+class="math inline">\(D_k\le4k^2\binom{N-1}{M-1}\)</span>, and with <a
+href="#lemma-1">Lemma 1</a> we conclude that <span
+class="math display">\[\begin{align}
+    D_{k+1}
+    &amp;\le\left(2k\sqrt{\binom{N-1}{M-1}}+2\sqrt{\binom{N-1}{M-1}}\right)^2\\
+    &amp;=4(k+1)^2\binom{N-1}{M-1}
+\end{align}\]</span></p>
+<h3 id="lowerbound-of-d_w">Lowerbound of <span
+class="math inline">\(D_W\)</span></h3>
+<p>For the second half of the proof, we lowerbound <span
+class="math inline">\(D_k\)</span> by <span
+class="math inline">\(\Omega(1)\binom NM\)</span>. First, we define the
+projection matrix onto the subspace spanned by the solutions <span
+class="math inline">\(R\)</span>:</p>
+<p><span class="math display">\[\begin{align}
+    P_R:=\sum_{x\in R}\ket x\bra x\otimes I
+\end{align}\]</span></p>
+<p>Then again, we split <span class="math inline">\(D_W\)</span> into
+two parts, and try to apply <a href="#lemma-1">Lemma 1</a>:</p>
+<p><span class="math display">\[\begin{align}
+    D_W
+    &amp;=\sum_{R\subset
+S}\left\|(I-P_R)\psi_W^R+(P_R\psi_W^R-\psi_W)\right\|^2\\
+\end{align}\]</span></p>
+<p>For the first term, we have <span
+class="math inline">\(\braket{\psi_W^R|(I-P_R)|\psi_W^R}\le\frac12\)</span>,
+as we may assume that the probability of success is no less than <span
+class="math inline">\(\frac12\)</span> for this quantum algorithm. Thus
+we write down</p>
+<p><span class="math display">\[\begin{align}
+    \sum_{R\subset S}\left\|(I-P_R)\psi_W^R\right\|^2\le\frac12\binom NM
+\end{align}\]</span></p>
+<p>For the second term, we have</p>
+<p><span class="math display">\[\begin{align}
+    \left\|P_R\psi_W^R-\psi_W\right\|^2
+    &amp;=1+\braket{\psi_W^R|P_R|\psi_W^R}-2\Re\braket{\psi_W|P_R|\psi_W^R}\\
+    &amp;\ge\frac32-2\|P_R\psi_W\|^2\\
+    &amp;=\frac32-2\braket{\psi_W|P_R|\psi_W}\\
+\end{align}\]</span></p>
+<p>Summing over <span class="math inline">\(R\)</span>,</p>
+<p><span class="math display">\[\begin{align}
+    \sum_{R\subset S}\left\|P_R\psi_W^R-\psi_W\right\|^2
+    &amp;\ge\frac32\binom NM-2\sum_{R\subset S}\sum_{x\in
+R}\braket{\psi_W|(\ket x\bra x\otimes I)|\psi_W}\\
+    &amp;=\frac32\binom NM-2\binom{N-1}{M-1}\sum_{x\in
+S}\braket{\psi_W|(\ket x\bra x\otimes I)|\psi_W}\\
+    &amp;=\frac32\binom NM-2\binom{N-1}{M-1}\\
+    &amp;=\left(\frac32-2\frac MN\right)\binom NM
+\end{align}\]</span></p>
+<p>We may assume that <span class="math inline">\(\frac
+MN\le\frac14\)</span>. (In fact, for <span class="math inline">\(\frac
+MN&gt;\frac 14\)</span>, the problem is trivial as one only needs less
+than 4 trials on average using a naive algorithm.) We then apply <a
+href="#lemma-1">Lemma 1</a>:</p>
+<p><span class="math display">\[\begin{align}
+    D_W
+    &amp;\ge\left(\sqrt{\frac32-2\frac MN}-\sqrt{\frac12}\right)^2\binom
+NM\\
+    &amp;\ge\left(\frac32-\sqrt2\right)\binom NM
+\end{align}\]</span></p>
+<p>Combining the lowerbound and upperbound of <span
+class="math inline">\(D_W\)</span>, we have</p>
+<p><span class="math display">\[\begin{align}
+    &amp;\left(\frac32-\sqrt2\right)\binom NM\le
+D_W\le4W^2\binom{N-1}{M-1}\\
+    &amp;\implies W\ge\frac{2-\sqrt2}4\sqrt{\frac NM}\\
+    &amp;\implies W\ge\Omega\left(\sqrt{\frac NM}\right)
+\end{align}\]</span></p>
+<p>Which completes our proof.</p>
+<h1 id="summary">Summary</h1>
+<p>Although the proof is elegant, the result is rather disappointing, as
+some of us might expect more computational power out of a quantum
+computer. As we have learnt, assuming no structure for the solutions, a
+quantum computer can offer at most a polynomial speed up. (However, for
+problem with nice structures, we might be able to achieve exponential
+speedup, a example would be integer factoring, which can be solved
+effectively with quantum fourier transform, while no known classical
+algorithm can do factorization effectively.) This doesn't imply <span
+class="math inline">\(\textbf{BQP}\subset \textbf{NP}\)</span> however,
+as there might be some yet unknown structures for the solution space of
+<span class="math inline">\(\textbf{NP}\)</span>-complete problems which
+we can exploit.</p>
+<p>I read the original proof on <em>Quantum Computation and Quantum
+Information</em>, page 269-271. However, the proof only considered the
+situation where <span class="math inline">\(M=1\)</span>, so I spent
+like a whole afternoon generalizing it to arbitrary <span
+class="math inline">\(M\)</span>. That's when I came up with the idea of
+projection matrix in the second part of the proof. However, while I was
+writing this post, I realized that the original proof only allowed
+queries of "phase oracle", rather than the stantard oracle case, yet I
+don't know how to transform a phase oracle to a standard oracle. (If you
+know how to do the reduction, please contact me, and I'd like to learn
+about it!) So I spent another afternoon modifying the proof so that it
+applys to standard oracle, though making the proof more tedious.</p>
+]]></content>
+      <categories>
+        <category>quantum</category>
+      </categories>
+      <tags>
+        <tag>quantum</tag>
+        <tag>linear algeket</tag>
+        <tag>algorithm</tag>
       </tags>
   </entry>
 </search>
