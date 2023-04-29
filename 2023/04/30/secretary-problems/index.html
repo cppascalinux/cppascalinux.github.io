@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cppascalinux.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Background The story So I was reading this lecture note about secretary problems, and I was trying to prove Theorem 24.3 myself. I also obtained an sum representing the probability which is different">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Secretary Problems and High-order Sum of Harmonic Series">
+<meta property="og:url" content="http://cppascalinux.github.io/2023/04/30/secretary-problems/index.html">
+<meta property="og:site_name" content="cppascalinux&#39;s Blog">
+<meta property="og:description" content="Background The story So I was reading this lecture note about secretary problems, and I was trying to prove Theorem 24.3 myself. I also obtained an sum representing the probability which is different">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-04-30T00:27:10.000Z">
+<meta property="article:modified_time" content="2023-04-29T19:17:34.970Z">
+<meta property="article:author" content="cppascalinux">
+<meta property="article:tag" content="algorithm">
+<meta property="article:tag" content="summation">
+<meta property="article:tag" content="combinatorics">
+<meta property="article:tag" content="discrete math">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://cppascalinux.github.io/2023/04/30/secretary-problems/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://cppascalinux.github.io/2023/04/30/secretary-problems/","path":"2023/04/30/secretary-problems/","title":"Secretary Problems and High-order Sum of Harmonic Series"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Secretary Problems and High-order Sum of Harmonic Series | cppascalinux's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cppascalinux's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">QwQ</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">12</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">5</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#the-story"><span class="nav-number">1.1.</span> <span class="nav-text">The story</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#secretary-problems"><span class="nav-number">1.2.</span> <span class="nav-text">Secretary problems</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait-and-pick-algorithms"><span class="nav-number">1.3.</span> <span class="nav-text">Wait-and-pick algorithms</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#equation-of-sums"><span class="nav-number">2.</span> <span class="nav-text">Equation of sums</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#failed-attempts"><span class="nav-number">2.1.</span> <span class="nav-text">Failed attempts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#summation-by-parts"><span class="nav-number">2.2.</span> <span class="nav-text">Summation by parts</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#conclusion"><span class="nav-number">3.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">cppascalinux</p>
+  <div class="site-description" itemprop="description">Domestic Longhair</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cppascalinux" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cppascalinux" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cppascalinux@gmail.com" title="E-Mail → mailto:cppascalinux@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://cppascalinux.github.io/2023/04/30/secretary-problems/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="cppascalinux">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cppascalinux's Blog">
+      <meta itemprop="description" content="Domestic Longhair">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Secretary Problems and High-order Sum of Harmonic Series | cppascalinux's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Secretary Problems and High-order Sum of Harmonic Series
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-04-30 00:27:10" itemprop="dateCreated datePublished" datetime="2023-04-30T00:27:10Z">2023-04-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-04-29 19:17:34" itemprop="dateModified" datetime="2023-04-29T19:17:34Z">2023-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/04/30/secretary-problems/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/04/30/secretary-problems/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="background">Background</h1>
+<h2 id="the-story">The story</h2>
+<p>So I was reading this <a
+target="_blank" rel="noopener" href="https://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15850-f20/www/notes/lec27.pdf">lecture
+note</a> about secretary problems, and I was trying to prove Theorem
+24.3 myself. I also obtained an sum representing the probability which
+is different from the one in the lecture note. However I had some
+difficulty proving that the two sums are equilvalent (if not given this
+problem). After a day of suffering, using the summation by parts
+technique, I found that the sum was in fact a high-order sum of the
+harmonic series, and that this sum has a pretty simple
+representation.</p>
+<span id="more"></span>
+<h2 id="secretary-problems">Secretary problems</h2>
+<p>Here we define the secretary problems. Suppose there are <span
+class="math inline">\(n\)</span> items, each with a value <span
+class="math inline">\(v_i\ge0\)</span>, which you doesn't know in
+advance. Now these items are presented to you one by one, in uniformly
+random order. Each time you are presented with an item and its value,
+you can choose to pick it and end the game. Or, you can choose to pass,
+and request the next item. Notice that once an item has been rejected,
+it cannot be picked anymore. Now design an algorithm to maximize the
+expected value you get.</p>
+<p>Let <span class="math inline">\(V_{\max}\)</span> denote the maximum
+value. Then there is a simple strategy with expected value <span
+class="math inline">\(\frac14\mathbb E[V_{\max}]\)</span>: we pass the
+first half, and record the maximum value; then for the second half, we
+take the first item that has value greater then the recorded value.
+Obviously we can take the maximum value with probability <span
+class="math inline">\(\ge\frac14\)</span>, so the expected value is at
+least <span class="math inline">\(\frac14\mathbb
+E[V_{\max}]\)</span>.</p>
+<h2 id="wait-and-pick-algorithms">Wait-and-pick algorithms</h2>
+<p>The above algorithm is called a wait-and-pick algorithm. In fact,
+with a more detailed analysis, we can obtain a better result than <span
+class="math inline">\(\frac14\mathbb E[V_{\max}]\)</span>. Suppose there
+are <span class="math inline">\(n\)</span> items, and we pass the first
+<span class="math inline">\(m\)</span> items and record the maximum
+value. Then for the rest <span class="math inline">\(n-m\)</span> items,
+we take the first one that is larger than the recorded value. Then we
+can analyze the probability that we pick the <span
+class="math inline">\(V_{\max}\)</span>.</p>
+<p>My first thought is to enumerate over the maximum value of the first
+<span class="math inline">\(m\)</span> items. Without loss of
+gernerality, we may assume that the <span
+class="math inline">\(\{\text{value of items}\}=[n]\)</span>. Then the
+probability that the maximum over the first <span
+class="math inline">\(m\)</span> items being <span
+class="math inline">\(k\)</span> is <span class="math display">\[
+    \frac{\binom{k-1}{m-1}}{\binom nm}
+\]</span> Conditioned on the first <span
+class="math inline">\(m\)</span> items chosen, we may look at the
+permutation of the rest <span class="math inline">\(n-m\)</span> items.
+Notice that there are <span class="math inline">\(n-k\)</span> items
+larger than <span class="math inline">\(k\)</span> in the second
+portion, and the probability that <span class="math inline">\(n\)</span>
+being the first item to appear is <span
+class="math inline">\(\frac1{n-k}\)</span>. So overall, the probability
+can be written as <span class="math display">\[
+    \Pr[\text{Pick }n]=\sum_{k=m}^{n-1}\frac{\binom{k-1}{m-1}}{\binom
+nm}\frac1{n-k}=\frac1{\binom
+nm}\sum_{k=m}^{n-1}\binom{k-1}{m-1}\frac1{n-k}
+\]</span></p>
+<p>However, we might take a different approach as in the lecture note,
+that we enumerate over the position of <span
+class="math inline">\(n\)</span> in the sequence. Suppose that <span
+class="math inline">\(n\)</span> appears at the <span
+class="math inline">\(k\)</span>'th position, where <span
+class="math inline">\(k&gt;m\)</span>. Then the event that we pick <span
+class="math inline">\(n\)</span> is equivalent to the event that the
+maximum of the first <span class="math inline">\(k-1\)</span> items lies
+within first <span class="math inline">\(m\)</span> items, or the "pass
+portion". Therefore we can write the expression: <span
+class="math display">\[
+    \Pr[\text{Pick }n]=\sum_{k=m+1}^n\frac1n\frac m{k-1}=\frac
+mn\sum_{k=m}^{n-1}\frac1k
+\]</span> And this expression is much easier to analyze than the
+previous one. By approximating the harmonic sequence with natural
+logarithm, we can see that for <span class="math inline">\(m\approx
+\frac n{\text e}\)</span>, the probability is maximized at <span
+class="math inline">\(\frac1{\text e}\)</span>, so our expected value is
+at least <span class="math inline">\(\frac1{\text e}\mathbb
+E[V_{\max}]\)</span>.</p>
+<p>So now we have two expressions for <span
+class="math inline">\(\Pr[\text{Pick }n]\)</span>. However, they look
+completely different! Are they really equilvalent? Well, by this problem
+we know the answer is yes. However, if not given the background of the
+secretary problem and wait-and-pick algorithm, how are we gonna prove
+this equation?</p>
+<h1 id="equation-of-sums">Equation of sums</h1>
+<p>We can write down the following equation: <span
+class="math display">\[\begin{equation}
+    \sum_{k=m}^{n-1}\binom{k-1}{m-1}\frac1{n-k}=\binom{n-1}{m-1}\sum_{k=m}^{n-1}\frac1k\label{eq1}
+\end{equation}\]</span> And we want to prove this equation, without
+relying on the secretary problem we just described. In other words, we
+want to sum up the left-hand side.</p>
+<h2 id="failed-attempts">Failed attempts</h2>
+<p>My first intuition is <em>High-order differences</em>. This trick can
+be used to prove the following equation: (See <em>Concrete
+Mathematics</em>, pp. 187-192) <span class="math display">\[
+    \sum_k\binom nk\frac{(-1)^k}{x+k}=\frac1{\binom{x+n}nx}
+\]</span> This equation might somehow look similar to the our target.
+However, even with the trick of negating the upper index (See
+<em>Concrete Mathematics</em>, p. 164), I was stuck and couldn't
+simplify the sum.</p>
+<p>Then I tried to use <em>generating functions</em> since the sum
+looked like some convolution. But again I was stuck, as convolution
+couldn't handle terms involving <span class="math inline">\(n\)</span>.
+(Most likely the all-mighty generating functions can solve this problem,
+but I'm not so familiar with it. QwQ) Then I realized that, perhaps I
+have to try some more classical and brute methods.</p>
+<h2 id="summation-by-parts">Summation by parts</h2>
+<p>This is what brings real hope to the problem. We can use the
+summation by parts trick on the left-hand side of <span
+class="math inline">\(\eqref{eq1}\)</span>: <span
+class="math display">\[\begin{align*}
+    \sum_{k=m}^{n-1}\binom{k-1}{m-1}\frac1{n-k}
+    &amp;=\sum_{k=1}^{n-m}\binom{n-k-1}{m-1}\frac 1k\\
+    &amp;=\sum_{k=1}^{n-m}\left(\binom{n-k-1}{m-1}-\binom{n-k-2}{m-1}\right)\left(\sum_{i=1}^k\frac
+1i\right)\\
+    &amp;=\sum_{k=1}^{n-m}\binom{n-k-2}{m-2}H_k
+\end{align*}\]</span> Here we define <span
+class="math inline">\(H_k:=\sum_{i=1}^k\frac1i\)</span>. After one round
+of summation by parts, we have reduced the lower index of the
+combination numbers by one. Therefore after many rounds, we cna fully
+eliminate the combination numbers! Let <span
+class="math inline">\(S_{l,k}\)</span> denote the <span
+class="math inline">\(k\)</span>'th term of the <span
+class="math inline">\(l\)</span>'th order prefix sum of the harmonic
+series. More specifically, we define <span
+class="math inline">\(S_{l,k}\)</span> as follows: <span
+class="math display">\[\begin{align*}
+    S_{0,k}&amp;:=\frac1k\\
+    S_{1,k}&amp;:=\sum_{i=1}^k S_{0,i}\\
+    &amp;\vdots\\
+    S_{l,k}&amp;:=\sum_{i=1}^k S_{l-1,i}\\
+\end{align*}\]</span> Then by applying summation by parts repeatedly, we
+obtain that <span class="math display">\[\begin{align*}
+    \sum_{k=1}^{n-m}\binom{n-k-1}{m-1}S_{0,k}
+    &amp;=\sum_{k=1}^{n-m}\binom{n-k-2}{m-2}S_{1,k}\\
+    &amp;\vdots\\
+    &amp;=\sum_{k=1}^{n-m}\binom{n-k-m}0S_{m-1,k}\\
+    &amp;=\sum_{k=1}^{n-m}S_{m-1,k}\\
+    &amp;=H_{m,n-m}
+\end{align*}\]</span> Now the toxic sum has been simplified to just a
+single symbol. However a new problem arises: how to prove <span
+class="math inline">\(S_{m,n-m}\)</span> equals the right-hand side of
+<span class="math inline">\(\eqref{eq1}\)</span>? Well, now we can
+easily apply induction. We want to prove the following equation: <span
+class="math display">\[
+    S_{m,n}=\binom{n+m-1}{m-1}(H_{n+m-1}-H_{m-1})
+\]</span> First, for <span class="math inline">\(m=1\)</span>, the
+equation obviously holds. Then suppose that it holds for some <span
+class="math inline">\(m\)</span>. Then for <span
+class="math inline">\(S_{m+1,n}\)</span>, we have <span
+class="math display">\[\begin{align*}
+    S_{m+1,n}
+    &amp;=\sum_{i=0}^nS_{m,i}\\
+    &amp;=\sum_{i=0}^n\binom{i+m-1}{m-1}(H_{i+m-1}-H_{m-1})\\
+    &amp;=-H_{m-1}\sum_{i=0}^n\binom{i+m-1}{m-1}+\sum_{i=0}^nH_{i+m-1}\binom{i+m-1}{m-1}\\
+    &amp;=-H_{m-1}\binom{n+m}m+\sum_{i=0}^{n-1}(H_{i+m-1}-H_{i+m})\left(\sum_{j=0}^i\binom{j+m-1}{m-1}\right)+H_{n+m-1}\sum_{i=0}^n\binom{i+m-1}{m-1}\\
+    &amp;=-H_{m-1}\binom{n+m}m-\sum_{i=0}^{n-1}\frac1{i+m}\binom{i+m}m+H_{n+m-1}\binom{n+m}m\\
+    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})-\frac1m\sum_{i=0}^{n-1}\binom{i+m-1}{m-1}\\
+    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})-\frac1m\binom{n+m-1}{m}\\
+    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})-\binom{n+m}m\frac{n}{m(n+m)}\\
+    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})+\binom{n+m}m\left(\frac1{n+m}-\frac1m\right)\\
+    &amp;=\binom{n+m}m(H_{n+m}-H_m)
+\end{align*}\]</span> where we have again used summation by parts trick
+in the above deduction.</p>
+<p>Therefore we conclude that for <span
+class="math inline">\(\eqref{eq1}\)</span>, <span
+class="math inline">\(LHS=S_{m,n-m}=RHS\)</span>.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>I was trying to figure out a proof using combinatorial techniques,
+and all methods didn't work until I tried summation by parts to
+repeatedly reduce the lower index of the combination numbers. In the
+course of working on the proof, I also made a somehow surprising
+discovery: the high-order sums of harmonic series actually has a pretty
+simple representation. Maybe this result has some potential use for
+other works.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>cppascalinux
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://cppascalinux.github.io/2023/04/30/secretary-problems/" title="Secretary Problems and High-order Sum of Harmonic Series">http://cppascalinux.github.io/2023/04/30/secretary-problems/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/algorithm/" rel="tag"><i class="fa fa-tag"></i> algorithm</a>
+              <a href="/tags/summation/" rel="tag"><i class="fa fa-tag"></i> summation</a>
+              <a href="/tags/combinatorics/" rel="tag"><i class="fa fa-tag"></i> combinatorics</a>
+              <a href="/tags/discrete-math/" rel="tag"><i class="fa fa-tag"></i> discrete math</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/24/optimal-grover/" rel="prev" title="Optimality of Grover's Algorithm">
+                  <i class="fa fa-chevron-left"></i> Optimality of Grover's Algorithm
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cppascalinux</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">6k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">21 mins.</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"cppascalinux","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
