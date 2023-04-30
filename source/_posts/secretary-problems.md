@@ -2,7 +2,7 @@
 title: Secretary Problems and High-order Sum of Harmonic Series
 date: 2023-04-30 00:27:10
 tags: [summation, combinatorics, algorithm, discrete math]
-categories: algorithm
+categories: combinatorics
 ---
 
 # Background
