@@ -1041,8 +1041,10 @@ simplify the sum.</p>
 looked like some convolution. But again I was stuck, as convolution
 couldn't handle terms involving <span class="math inline">\(n\)</span>.
 (Most likely the all-mighty generating functions can solve this problem,
-but I'm not so familiar with it. QwQ) Then I realized that, perhaps I
-have to try some more classical and brute methods.</p>
+but I'm not so familiar with it. QwQ) <strong>(Update: see <a
+href="#generating-function">Generating function</a>)</strong> Then I
+realized that, perhaps I have to try some more classical and brute
+methods.</p>
 <h2 id="summation-by-parts">Summation by parts</h2>
 <p>This is what brings real hope to the problem. We can use the
 summation by parts trick on the left-hand side of <span
@@ -1112,6 +1114,48 @@ course of working on the proof, I also made a somehow surprising
 discovery: the high-order sums of harmonic series actually has a pretty
 simple representation. Maybe this result has some potential use for
 other works.</p>
+<h1 id="generating-function">Generating function</h1>
+<p>So after I completed this blog, I suddenly realized this problem can
+actually be solved with generating function easily. (And I was dumb QwQ)
+First, we write the left-hand side of <span
+class="math inline">\(\eqref{eq1}\)</span> as <span
+class="math display">\[\begin{equation}
+    \sum_{k=0}^{n-m-1}\binom{m+k-1}{m-1}\frac1{n-m-k}\label{eq2}
+\end{equation}\]</span> Then recall that we can actually write down the
+generating function for the two multiplicants: <span
+class="math display">\[\begin{align*}
+    \sum_{k\ge0}\binom{m+k-1}{m-1}x^k&amp;=\frac1{(1-x)^m}=:f(x)\\
+    \sum_{k\ge1}\frac1{k}x^k&amp;=-\ln(1-x)=:g(x)
+\end{align*}\]</span> Then by convolution, <span
+class="math inline">\(\eqref{eq2}\)</span> is actually equal to <span
+class="math inline">\([x^{n-m}](f(x)g(x))\)</span>. Define <span
+class="math inline">\(h(x):=f(x)g(x)\)</span>, then we only need to
+compute <span class="math inline">\(\frac1{(n-m)!}h^{(n-m)}(0)\)</span>.
+So from now on, we focus on the derivatives of <span
+class="math inline">\(h(x)=\frac{-\ln(1-x)}{(1-x)^m}\)</span>. <span
+class="math display">\[\begin{align*}
+    h&#39;(x)&amp;=\frac{-m\ln(1-x)}{(1-x)^{m+1}}+\frac1{(1-x)^{m+1}}\\
+    h&#39;&#39;(x)&amp;=\frac{-m(m+1)\ln(1-x)}{(1-x)^{m+2}}+\frac{m+(m+1)}{(1-x)^{m+2}}\\
+    &amp;\vdots
+\end{align*}\]</span> Let <span class="math inline">\(q_i(x)\)</span>
+denote the second term of <span
+class="math inline">\(h^{(i)}(x)\)</span>. Then it's not hard to see
+that <span class="math display">\[\begin{align*}
+    q_0(x)&amp;=0\\
+    q_1(x)&amp;=\frac{1}{(1-x)^{m+1}}\\
+    q_2(x)&amp;=\frac{2m+1}{(1-x)^{m+2}}\\
+    &amp;\vdots\\
+    q_{i+1}(x)&amp;=\frac{m+i}{1-x}q_i(x)+\frac{\frac{(m+i-1)!}{(m-1)!}}{(1-x)^{i+1}}
+\end{align*}\]</span> Then by induction, we can prove that <span
+class="math display">\[
+    q_i(x)=\frac1{(1-x)^{i+1}}\frac{(m+i-1)!}{(m-1)!}\sum_{k=m}^{m+i-1}\frac1k
+\]</span> Therefore we have <span class="math display">\[
+    h^{(n-m)}(0)=q_{n-m}(0)=\frac{(n-1)!}{(m-1)!}\sum_{k=m}^{n-1}\frac1k
+\]</span> And <span class="math inline">\(\eqref{eq2}\)</span> is equal
+to <span class="math display">\[
+    \frac1{(n-m)!}h^{(n-m)}(0)=\binom{n-1}{m-1}\sum_{k=m}^{n-1}\frac1k
+\]</span> which is exactly the right-hand side of <span
+class="math inline">\(\eqref{eq1}\)</span>.</p>
 ]]></content>
       <categories>
         <category>combinatorics</category>
@@ -1121,6 +1165,7 @@ other works.</p>
         <tag>summation</tag>
         <tag>combinatorics</tag>
         <tag>discrete math</tag>
+        <tag>generating function</tag>
       </tags>
   </entry>
 </search>
