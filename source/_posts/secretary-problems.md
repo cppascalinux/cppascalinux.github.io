@@ -1,7 +1,7 @@
 ---
 title: Secretary Problems and High-order Sum of Harmonic Series
 date: 2023-04-30 00:27:10
-tags: [summation, combinatorics, algorithm, discrete math]
+tags: [summation, combinatorics, algorithm, discrete math, generating function]
 categories: combinatorics
 ---
 
@@ -52,7 +52,7 @@ $$
 $$
 This equation might somehow look similar to the our target. However, even with the trick of negating the upper index (See *Concrete Mathematics*, p. 164), I was stuck and couldn't simplify the sum.
 
-Then I tried to use *generating functions* since the sum looked like some convolution. But again I was stuck, as convolution couldn't handle terms involving $n$. (Most likely the all-mighty generating functions can solve this problem, but I'm not so familiar with it. QwQ) Then I realized that, perhaps I have to try some more classical and brute methods.
+Then I tried to use *generating functions* since the sum looked like some convolution. But again I was stuck, as convolution couldn't handle terms involving $n$. (Most likely the all-mighty generating functions can solve this problem, but I'm not so familiar with it. QwQ) **(Update: see [Generating function](#generating-function))** Then I realized that, perhaps I have to try some more classical and brute methods.
 
 ## Summation by parts
 This is what brings real hope to the problem. We can use the summation by parts trick on the left-hand side of $\eqref{eq1}$:
@@ -102,3 +102,41 @@ Therefore we conclude that for $\eqref{eq1}$, $LHS=S_{m,n-m}=RHS$.
 
 # Conclusion
 I was trying to figure out a proof using combinatorial techniques, and all methods didn't work until I tried summation by parts to repeatedly reduce the lower index of the combination numbers. In the course of working on the proof, I also made a somehow surprising discovery: the high-order sums of harmonic series actually has a pretty simple representation. Maybe this result has some potential use for other works.
+
+# Generating function
+So after I completed this blog, I suddenly realized this problem can actually be solved with generating function easily. (And I was dumb QwQ) First, we write the left-hand side of $\eqref{eq1}$ as
+$$\begin{equation}
+	\sum_{k=0}^{n-m-1}\binom{m+k-1}{m-1}\frac1{n-m-k}\label{eq2}
+\end{equation}$$
+Then recall that we can actually write down the generating function for the two multiplicants:
+$$\begin{align*}
+	\sum_{k\ge0}\binom{m+k-1}{m-1}x^k&=\frac1{(1-x)^m}=:f(x)\\
+	\sum_{k\ge1}\frac1{k}x^k&=-\ln(1-x)=:g(x)
+\end{align*}$$
+Then by convolution, $\eqref{eq2}$ is actually equal to $[x^{n-m}](f(x)g(x))$. Define $h(x):=f(x)g(x)$, then we only need to compute $\frac1{(n-m)!}h^{(n-m)}(0)$. So from now on, we focus on the derivatives of $h(x)=\frac{-\ln(1-x)}{(1-x)^m}$.
+$$\begin{align*}
+	h'(x)&=\frac{-m\ln(1-x)}{(1-x)^{m+1}}+\frac1{(1-x)^{m+1}}\\
+	h''(x)&=\frac{-m(m+1)\ln(1-x)}{(1-x)^{m+2}}+\frac{m+(m+1)}{(1-x)^{m+2}}\\
+	&\vdots
+\end{align*}$$
+Let $q_i(x)$ denote the second term of $h^{(i)}(x)$. Then it's not hard to see that
+$$\begin{align*}
+	q_0(x)&=0\\
+	q_1(x)&=\frac{1}{(1-x)^{m+1}}\\
+	q_2(x)&=\frac{2m+1}{(1-x)^{m+2}}\\
+	&\vdots\\
+	q_{i+1}(x)&=\frac{m+i}{1-x}q_i(x)+\frac{\frac{(m+i-1)!}{(m-1)!}}{(1-x)^{i+1}}
+\end{align*}$$
+Then by induction, we can prove that
+$$
+	q_i(x)=\frac1{(1-x)^{i+1}}\frac{(m+i-1)!}{(m-1)!}\sum_{k=m}^{m+i-1}\frac1k
+$$
+Therefore we have
+$$
+	h^{(n-m)}(0)=q_{n-m}(0)=\frac{(n-1)!}{(m-1)!}\sum_{k=m}^{n-1}\frac1k
+$$
+And $\eqref{eq2}$ is equal to
+$$
+	\frac1{(n-m)!}h^{(n-m)}(0)=\binom{n-1}{m-1}\sum_{k=m}^{n-1}\frac1k
+$$
+which is exactly the right-hand side of $\eqref{eq1}$.
