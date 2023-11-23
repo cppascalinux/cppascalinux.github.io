@@ -366,6 +366,525 @@ role="doc-backlink">↩︎</a></p></li>
       </tags>
   </entry>
   <entry>
+    <title>Secretary Problems and High-order Sum of Harmonic Series</title>
+    <url>/2023/04/30/secretary-problems/</url>
+    <content><![CDATA[<h1 id="background">Background</h1>
+<h2 id="the-story">The story</h2>
+<p>So I was reading this <a
+href="https://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15850-f20/www/notes/lec27.pdf">lecture
+note</a> about secretary problems, and I was trying to prove Theorem
+24.3 myself. I also obtained an sum representing the probability which
+is different from the one in the lecture note. However I had some
+difficulty proving that the two sums are equilvalent (if not given this
+problem). After a day of suffering, using the summation by parts
+technique, I found that the sum was in fact a high-order sum of the
+harmonic series, and that this sum has a pretty simple
+representation.</p>
+<span id="more"></span>
+<h2 id="secretary-problems">Secretary problems</h2>
+<p>Here we define the secretary problems. Suppose there are <span
+class="math inline">\(n\)</span> items, each with a value <span
+class="math inline">\(v_i\ge0\)</span>, which you doesn't know in
+advance. Now these items are presented to you one by one, in uniformly
+random order. Each time you are presented with an item and its value,
+you can choose to pick it and end the game. Or, you can choose to pass,
+and request the next item. Notice that once an item has been rejected,
+it cannot be picked anymore. Now design an algorithm to maximize the
+expected value you get.</p>
+<p>Let <span class="math inline">\(V_{\max}\)</span> denote the maximum
+value. Then there is a simple strategy with expected value <span
+class="math inline">\(\frac14\mathbb E[V_{\max}]\)</span>: we pass the
+first half, and record the maximum value; then for the second half, we
+take the first item that has value greater then the recorded value.
+Obviously we can take the maximum value with probability <span
+class="math inline">\(\ge\frac14\)</span>, so the expected value is at
+least <span class="math inline">\(\frac14\mathbb
+E[V_{\max}]\)</span>.</p>
+<h2 id="wait-and-pick-algorithms">Wait-and-pick algorithms</h2>
+<p>The above algorithm is called a wait-and-pick algorithm. In fact,
+with a more detailed analysis, we can obtain a better result than <span
+class="math inline">\(\frac14\mathbb E[V_{\max}]\)</span>. Suppose there
+are <span class="math inline">\(n\)</span> items, and we pass the first
+<span class="math inline">\(m\)</span> items and record the maximum
+value. Then for the rest <span class="math inline">\(n-m\)</span> items,
+we take the first one that is larger than the recorded value. Then we
+can analyze the probability that we pick the <span
+class="math inline">\(V_{\max}\)</span>.</p>
+<p>My first thought is to enumerate over the maximum value of the first
+<span class="math inline">\(m\)</span> items. Without loss of
+gernerality, we may assume that the <span
+class="math inline">\(\{\text{value of items}\}=[n]\)</span>. Then the
+probability that the maximum over the first <span
+class="math inline">\(m\)</span> items being <span
+class="math inline">\(k\)</span> is <span class="math display">\[
+    \frac{\binom{k-1}{m-1}}{\binom nm}
+\]</span> Conditioned on the first <span
+class="math inline">\(m\)</span> items chosen, we may look at the
+permutation of the rest <span class="math inline">\(n-m\)</span> items.
+Notice that there are <span class="math inline">\(n-k\)</span> items
+larger than <span class="math inline">\(k\)</span> in the second
+portion, and the probability that <span class="math inline">\(n\)</span>
+being the first item to appear is <span
+class="math inline">\(\frac1{n-k}\)</span>. So overall, the probability
+can be written as <span class="math display">\[
+    \Pr[\text{Pick }n]=\sum_{k=m}^{n-1}\frac{\binom{k-1}{m-1}}{\binom
+nm}\frac1{n-k}=\frac1{\binom
+nm}\sum_{k=m}^{n-1}\binom{k-1}{m-1}\frac1{n-k}
+\]</span></p>
+<p>However, we might take a different approach as in the lecture note,
+that we enumerate over the position of <span
+class="math inline">\(n\)</span> in the sequence. Suppose that <span
+class="math inline">\(n\)</span> appears at the <span
+class="math inline">\(k\)</span>'th position, where <span
+class="math inline">\(k&gt;m\)</span>. Then the event that we pick <span
+class="math inline">\(n\)</span> is equivalent to the event that the
+maximum of the first <span class="math inline">\(k-1\)</span> items lies
+within first <span class="math inline">\(m\)</span> items, or the "pass
+portion". Therefore we can write the expression: <span
+class="math display">\[
+    \Pr[\text{Pick }n]=\sum_{k=m+1}^n\frac1n\frac m{k-1}=\frac
+mn\sum_{k=m}^{n-1}\frac1k
+\]</span> And this expression is much easier to analyze than the
+previous one. By approximating the harmonic sequence with natural
+logarithm, we can see that for <span class="math inline">\(m\approx
+\frac n{\text e}\)</span>, the probability is maximized at <span
+class="math inline">\(\frac1{\text e}\)</span>, so our expected value is
+at least <span class="math inline">\(\frac1{\text e}\mathbb
+E[V_{\max}]\)</span>.</p>
+<p>So now we have two expressions for <span
+class="math inline">\(\Pr[\text{Pick }n]\)</span>. However, they look
+completely different! Are they really equilvalent? Well, by this problem
+we know the answer is yes. However, if not given the background of the
+secretary problem and wait-and-pick algorithm, how are we gonna prove
+this equation?</p>
+<h1 id="equation-of-sums">Equation of sums</h1>
+<p>We can write down the following equation: <span
+class="math display">\[\begin{equation}
+    \sum_{k=m}^{n-1}\binom{k-1}{m-1}\frac1{n-k}=\binom{n-1}{m-1}\sum_{k=m}^{n-1}\frac1k\label{eq1}
+\end{equation}\]</span> And we want to prove this equation, without
+relying on the secretary problem we just described. In other words, we
+want to sum up the left-hand side.</p>
+<h2 id="failed-attempts">Failed attempts</h2>
+<p>My first intuition is <em>High-order differences</em>. This trick can
+be used to prove the following equation: (See <em>Concrete
+Mathematics</em>, pp. 187-192) <span class="math display">\[
+    \sum_k\binom nk\frac{(-1)^k}{x+k}=\frac1{\binom{x+n}nx}
+\]</span> This equation might somehow look similar to the our target.
+However, even with the trick of negating the upper index (See
+<em>Concrete Mathematics</em>, p. 164), I was stuck and couldn't
+simplify the sum.</p>
+<p>Then I tried to use <em>generating functions</em> since the sum
+looked like some convolution. But again I was stuck, as convolution
+couldn't handle terms involving <span class="math inline">\(n\)</span>.
+(Most likely the all-mighty generating functions can solve this problem,
+but I'm not so familiar with it. QwQ) <strong>(Update: see <a
+href="#generating-function">Generating function</a>)</strong> Then I
+realized that, perhaps I have to try some more classical and brute
+methods.</p>
+<h2 id="summation-by-parts">Summation by parts</h2>
+<p>This is what brings real hope to the problem. We can use the
+summation by parts trick on the left-hand side of <span
+class="math inline">\(\eqref{eq1}\)</span>: <span
+class="math display">\[\begin{align*}
+    \sum_{k=m}^{n-1}\binom{k-1}{m-1}\frac1{n-k}
+    &amp;=\sum_{k=1}^{n-m}\binom{n-k-1}{m-1}\frac 1k\\
+    &amp;=\sum_{k=1}^{n-m}\left(\binom{n-k-1}{m-1}-\binom{n-k-2}{m-1}\right)\left(\sum_{i=1}^k\frac
+1i\right)\\
+    &amp;=\sum_{k=1}^{n-m}\binom{n-k-2}{m-2}H_k
+\end{align*}\]</span> Here we define <span
+class="math inline">\(H_k:=\sum_{i=1}^k\frac1i\)</span>. After one round
+of summation by parts, we have reduced the lower index of the
+combination numbers by one. Therefore after many rounds, we cna fully
+eliminate the combination numbers! Let <span
+class="math inline">\(S_{l,k}\)</span> denote the <span
+class="math inline">\(k\)</span>'th term of the <span
+class="math inline">\(l\)</span>'th order prefix sum of the harmonic
+series. More specifically, we define <span
+class="math inline">\(S_{l,k}\)</span> as follows: <span
+class="math display">\[\begin{align*}
+    S_{0,k}&amp;:=\frac1k\\
+    S_{1,k}&amp;:=\sum_{i=1}^k S_{0,i}\\
+    &amp;\vdots\\
+    S_{l,k}&amp;:=\sum_{i=1}^k S_{l-1,i}\\
+\end{align*}\]</span> Then by applying summation by parts repeatedly, we
+obtain that <span class="math display">\[\begin{align*}
+    \sum_{k=1}^{n-m}\binom{n-k-1}{m-1}S_{0,k}
+    &amp;=\sum_{k=1}^{n-m}\binom{n-k-2}{m-2}S_{1,k}\\
+    &amp;\vdots\\
+    &amp;=\sum_{k=1}^{n-m}\binom{n-k-m}0S_{m-1,k}\\
+    &amp;=\sum_{k=1}^{n-m}S_{m-1,k}\\
+    &amp;=H_{m,n-m}
+\end{align*}\]</span> Now the toxic sum has been simplified to just a
+single symbol. However a new problem arises: how to prove <span
+class="math inline">\(S_{m,n-m}\)</span> equals the right-hand side of
+<span class="math inline">\(\eqref{eq1}\)</span>? Well, now we can
+easily apply induction. We want to prove the following equation: <span
+class="math display">\[
+    S_{m,n}=\binom{n+m-1}{m-1}(H_{n+m-1}-H_{m-1})
+\]</span> First, for <span class="math inline">\(m=1\)</span>, the
+equation obviously holds. Then suppose that it holds for some <span
+class="math inline">\(m\)</span>. Then for <span
+class="math inline">\(S_{m+1,n}\)</span>, we have <span
+class="math display">\[\begin{align*}
+    S_{m+1,n}
+    &amp;=\sum_{i=0}^nS_{m,i}\\
+    &amp;=\sum_{i=0}^n\binom{i+m-1}{m-1}(H_{i+m-1}-H_{m-1})\\
+    &amp;=-H_{m-1}\sum_{i=0}^n\binom{i+m-1}{m-1}+\sum_{i=0}^nH_{i+m-1}\binom{i+m-1}{m-1}\\
+    &amp;=-H_{m-1}\binom{n+m}m+\sum_{i=0}^{n-1}(H_{i+m-1}-H_{i+m})\left(\sum_{j=0}^i\binom{j+m-1}{m-1}\right)+H_{n+m-1}\sum_{i=0}^n\binom{i+m-1}{m-1}\\
+    &amp;=-H_{m-1}\binom{n+m}m-\sum_{i=0}^{n-1}\frac1{i+m}\binom{i+m}m+H_{n+m-1}\binom{n+m}m\\
+    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})-\frac1m\sum_{i=0}^{n-1}\binom{i+m-1}{m-1}\\
+    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})-\frac1m\binom{n+m-1}{m}\\
+    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})-\binom{n+m}m\frac{n}{m(n+m)}\\
+    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})+\binom{n+m}m\left(\frac1{n+m}-\frac1m\right)\\
+    &amp;=\binom{n+m}m(H_{n+m}-H_m)
+\end{align*}\]</span> where we have again used summation by parts trick
+in the above deduction.</p>
+<p>Therefore we conclude that for <span
+class="math inline">\(\eqref{eq1}\)</span>, <span
+class="math inline">\(LHS=S_{m,n-m}=RHS\)</span>.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>I was trying to figure out a proof using combinatorial techniques,
+and all methods didn't work until I tried summation by parts to
+repeatedly reduce the lower index of the combination numbers. In the
+course of working on the proof, I also made a somehow surprising
+discovery: the high-order sums of harmonic series actually has a pretty
+simple representation. Maybe this result has some potential use for
+other works.</p>
+<h1 id="generating-function">Generating function</h1>
+<p>So after I completed this blog, I suddenly realized this problem can
+actually be solved with generating function easily. (And I was dumb QwQ)
+First, we write the left-hand side of <span
+class="math inline">\(\eqref{eq1}\)</span> as <span
+class="math display">\[\begin{equation}
+    \sum_{k=0}^{n-m-1}\binom{m+k-1}{m-1}\frac1{n-m-k}\label{eq2}
+\end{equation}\]</span> Then recall that we can actually write down the
+generating function for the two multiplicants: <span
+class="math display">\[\begin{align*}
+    \sum_{k\ge0}\binom{m+k-1}{m-1}x^k&amp;=\frac1{(1-x)^m}=:f(x)\\
+    \sum_{k\ge1}\frac1{k}x^k&amp;=-\ln(1-x)=:g(x)
+\end{align*}\]</span> Then by convolution, <span
+class="math inline">\(\eqref{eq2}\)</span> is actually equal to <span
+class="math inline">\([x^{n-m}](f(x)g(x))\)</span>. Define <span
+class="math inline">\(h(x):=f(x)g(x)\)</span>, then we only need to
+compute <span class="math inline">\(\frac1{(n-m)!}h^{(n-m)}(0)\)</span>.
+So from now on, we focus on the derivatives of <span
+class="math inline">\(h(x)=\frac{-\ln(1-x)}{(1-x)^m}\)</span>. <span
+class="math display">\[\begin{align*}
+    h&#39;(x)&amp;=\frac{-m\ln(1-x)}{(1-x)^{m+1}}+\frac1{(1-x)^{m+1}}\\
+    h&#39;&#39;(x)&amp;=\frac{-m(m+1)\ln(1-x)}{(1-x)^{m+2}}+\frac{m+(m+1)}{(1-x)^{m+2}}\\
+    &amp;\vdots
+\end{align*}\]</span> Let <span class="math inline">\(q_i(x)\)</span>
+denote the second term of <span
+class="math inline">\(h^{(i)}(x)\)</span>. Then it's not hard to see
+that <span class="math display">\[\begin{align*}
+    q_0(x)&amp;=0\\
+    q_1(x)&amp;=\frac{1}{(1-x)^{m+1}}\\
+    q_2(x)&amp;=\frac{2m+1}{(1-x)^{m+2}}\\
+    &amp;\vdots\\
+    q_{i+1}(x)&amp;=\frac{m+i}{1-x}q_i(x)+\frac{\frac{(m+i-1)!}{(m-1)!}}{(1-x)^{i+1}}
+\end{align*}\]</span> Then by induction, we can prove that <span
+class="math display">\[
+    q_i(x)=\frac1{(1-x)^{i+1}}\frac{(m+i-1)!}{(m-1)!}\sum_{k=m}^{m+i-1}\frac1k
+\]</span> Therefore we have <span class="math display">\[
+    h^{(n-m)}(0)=q_{n-m}(0)=\frac{(n-1)!}{(m-1)!}\sum_{k=m}^{n-1}\frac1k
+\]</span> And <span class="math inline">\(\eqref{eq2}\)</span> is equal
+to <span class="math display">\[
+    \frac1{(n-m)!}h^{(n-m)}(0)=\binom{n-1}{m-1}\sum_{k=m}^{n-1}\frac1k
+\]</span> which is exactly the right-hand side of <span
+class="math inline">\(\eqref{eq1}\)</span>.</p>
+]]></content>
+      <categories>
+        <category>combinatorics</category>
+      </categories>
+      <tags>
+        <tag>summation</tag>
+        <tag>combinatorics</tag>
+        <tag>algorithm</tag>
+        <tag>discrete math</tag>
+        <tag>generating function</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Optimality of Grover&#39;s Algorithm</title>
+    <url>/2023/02/24/optimal-grover/</url>
+    <content><![CDATA[<h1 id="introduction">Introduction</h1>
+<p>Let's start with the <em>SAT</em> problem: suppose we are given a
+boolean SAT formula with <span class="math inline">\(n\)</span>
+variables and <span class="math inline">\(poly(n)\)</span> clauses, and
+we want to know whether there exists a satisfiying assignment. This
+problem is known to be <em>NP-complete</em>, thus is generally believed
+to be hard to solve on a classical computer. The <em>exponential time
+hypothesis</em> states that satisfiability of SAT cannot be solved in
+<span class="math inline">\(2^{o(n)}\)</span> time. However, with
+<em>Grover's algorithm</em> on a quantum computer, one can determine the
+existence of satisfying assignment, or even find one, within time <span
+class="math inline">\(O\left(2^{\frac n2}\right)\)</span>! In fact, for
+any search problem with <span class="math inline">\(N\)</span>
+candidates and <span class="math inline">\(M\)</span> solutions,
+<em>Grover's algorithm</em> can find one solution with <span
+class="math inline">\(O\left(\sqrt{\frac NM}\right)\)</span> operations,
+while a classical algorithm usually takes <span
+class="math inline">\(O(\frac NM)\)</span> operations.</p>
+<span id="more"></span>
+<p>This implies that quantum computers are inherently much more powerful
+that classical computers, right? Well, yes but no. On one hand,
+<em>Grover's algorithm</em> does offer a sqaure root speed up over
+classical algorithms. On the other hand, however, one can prove that for
+a general unstructured search problem with <span
+class="math inline">\(N\)</span> candidates and <span
+class="math inline">\(M\)</span> solutions, no quantum algorithms take
+less than <span class="math inline">\(\Theta\left(\sqrt{\frac
+NM}\right)\)</span> operations to find a solution! This can be huge
+disappointment for quantum enthusiasts, who might believe that quantum
+computers might offer a super-polynomial or even exponential speed up
+over classical computers for general unstructured problems. We will dive
+into this topic in the following paragraphs.</p>
+<h1 id="basic-facts">Basic facts</h1>
+<h2 id="definition-of-general-search-problems">Definition of general
+search problems</h2>
+<blockquote>
+<p>Let <span class="math inline">\(S=\{0,1\}^n\)</span> be the search
+space, and <span class="math inline">\(R\subset S\)</span> be the
+solutions, we define <span class="math inline">\(N=|S|,M=|R|\)</span>.
+Let <span class="math inline">\(f_R:S\to\{0,1\}\)</span> be a function
+that checks whether a given solution is valid, i.e. <span
+class="math inline">\(f_R(x)=1\iff x\in R\)</span>. To find a solution,
+we are allowed to query <span class="math inline">\(f_R\)</span> as an
+oracle in our algorithm design. (For a quantum algorithm, we are given
+an "oracle operation" <span class="math inline">\(O_R\)</span> such that
+<span class="math inline">\(O_R\ket x\ket b=\ket x\ket{b\oplus
+f_R(x)}\)</span>) The efficiency is measured by the number of oracle
+queries.</p>
+</blockquote>
+<h2 id="hardness-of-general-search-problems">Hardness of general search
+problems</h2>
+<p>With no other assumptions about the structure of the problem, the
+best a classical algorithm can do is to guess a solution randomly.
+Obviously it takes <span class="math inline">\(\Theta\left(\frac
+NM\right)\)</span> oracle queries on average to find a solution.
+However, for a quantum computer, it only takes <span
+class="math inline">\(\Theta\left(\sqrt{\frac NM}\right)\)</span> oracle
+queries to do so, using <em>Grover's algorithm</em>. The procedure of
+the algorithm is left out in this post, and you are encouraged to check
+it out yourself.</p>
+<h1 id="optimality-of-grovers-algorithm">Optimality of Grover's
+algorithm</h1>
+<p>First, we introduce a lemma to bound the sum of vector norms:</p>
+<h2 id="lemma-1">Lemma 1</h2>
+<blockquote>
+<p>Let <span class="math inline">\(\{\alpha_i\}\)</span> and <span
+class="math inline">\(\{\beta_i\}\)</span> be some finite sequence of
+vectors in a inner product space. Then we have <span
+class="math display">\[\begin{align}
+  \sum_i\|\alpha_i+\beta_i\|^2&amp;\le\left(\sqrt{\sum_i\|\alpha_i\|^2}+\sqrt{\sum_i\|\beta_i\|^2}\right)^2\\
+  \sum_i\|\alpha_i+\beta_i\|^2&amp;\ge\left(\sqrt{\sum_i\|\alpha_i\|^2}-\sqrt{\sum_i\|\beta_i\|^2}\right)^2
+\end{align}\]</span></p>
+</blockquote>
+<h2 id="proof-of-lemma-1">Proof of <a href="#lemma-1">Lemma 1</a></h2>
+<p>By the triangle inequality, we have</p>
+<p><span class="math display">\[\begin{align}
+    \sum_i\|\alpha_i+\beta_i\|^2
+    &amp;\le\sum_i(\|\alpha_i\|+\|\beta_i\|)^2\\
+    &amp;=\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2+2\sum_i\|\alpha_i\|\|\beta_i\|
+\end{align}\]</span></p>
+<p>Then we apply Cauchy-Schwarz inequality on the third term:</p>
+<p><span class="math display">\[\begin{align}
+    \sum_i\|\alpha_i+\beta_i\|^2
+    &amp;\le\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2+2\sqrt{\sum_i\|\alpha_i\|^2}\sqrt{\sum_i\|\beta_i\|^2}\\
+    &amp;=\left(\sqrt{\sum_i\|\alpha_i\|^2}+\sqrt{\sum_i\|\beta_i\|^2}\right)^2
+\end{align}\]</span></p>
+<p>The other side is similar:</p>
+<p><span class="math display">\[\begin{align}
+    \sum_i\|\alpha_i+\beta_i\|^2
+    &amp;\ge\sum_i(\|\alpha_i\|-\|\beta_i\|)^2\\
+    &amp;=\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2-2\sum_i\|\alpha_i\|\|\beta_i\|\\
+    &amp;\ge\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2-2\sqrt{\sum_i\|\alpha_i\|^2}\sqrt{\sum_i\|\beta_i\|^2}\\
+    &amp;=\left(\sqrt{\sum_i\|\alpha_i\|^2}-\sqrt{\sum_i\|\beta_i\|^2}\right)^2
+\end{align}\]</span></p>
+<p>Now we are going to prove the main result:</p>
+<h2 id="theorem-1">Theorem 1</h2>
+<blockquote>
+<p>All quantum algorithms that find a solution with <span
+class="math inline">\(O(1)\)</span> probability requires <span
+class="math inline">\(\Omega\left(\sqrt{\frac NM}\right)\)</span> oracle
+queries.</p>
+</blockquote>
+<h2 id="proof-of-theorem-1">Proof of <a href="#theorem-1">Theorem
+1</a></h2>
+<p>Without loss of generality, we may assume that the quantum algorithm
+uses <span class="math inline">\(m\)</span> qubits for some <span
+class="math inline">\(m&gt;n\)</span>. It applies <span
+class="math inline">\(W\)</span> unitary operations, interleaved with
+<span class="math inline">\(W\)</span> oracle operations. More
+specifically, let <span class="math inline">\(\ket\psi\)</span> be the
+initial state of the register, we compute <span
+class="math inline">\(\ket{\psi_W^R}:=U_WO_RU_{W-1}O_R\cdots
+U_1O_R\ket\psi\)</span>, and then measure the first <span
+class="math inline">\(n\)</span> qubits of <span
+class="math inline">\(\ket{\psi_W^R}\)</span> as an answer. We may
+assume that the oracle queries are done on the first <span
+class="math inline">\(n\)</span> qubits, and the result is XORed with
+the <span class="math inline">\((n+1)\)</span>'th qubit. (Otherwise we
+can "swap" the queried qubits with the first <span
+class="math inline">\((n+1)\)</span> qubits, and then swap them back
+after the query, as there is no limit on the unitary operations we
+apply.)</p>
+<p>We define <span class="math display">\[\begin{align}
+    \ket{\psi_k^R}&amp;:=U_kO_RU_{k-1}O_R\cdots U_1O_R\ket\psi\\
+    \ket{\psi_k}&amp;:=U_kU_{k-1}\cdots U_1\ket\psi\\
+    D_k&amp;:=\sum_{R\subset S}\left\|\psi_k^R-\psi_k\right\|^2
+\end{align}\]</span></p>
+<h3 id="upperbound-of-d_w">Upperbound of <span
+class="math inline">\(D_W\)</span></h3>
+<p>For the first half of the proof, we upperbound <span
+class="math inline">\(D_k\)</span> by <span
+class="math inline">\(4k^2\binom{N-1}{M-1}\)</span> using induction:</p>
+<p><span class="math display">\[\begin{align}
+    D_{k+1}
+    &amp;=\sum_{R\subset
+S}\left\|U_{k+1}O_R\psi_k^R-U_{k+1}\psi_k\right\|^2\\
+    &amp;=\sum_{R\subset S}\left\|O_R\psi_k^R-\psi_k\right\|^2\\
+    &amp;=\sum_{R\subset
+S}\left\|O_R(\psi_k^R-\psi_k)+(O_R-I)\psi_k\right\|^2\\
+\end{align}\]</span></p>
+<p>Notice that <span class="math inline">\(O_R\)</span> and <span
+class="math inline">\(I\)</span> can be written as <span
+class="math display">\[\begin{align}
+    O_R&amp;=\sum_{x\notin R}\ket x\bra x\otimes I\otimes I+\sum_{x\in
+R}\ket x\bra x\otimes X\otimes I\\
+    I&amp;=\sum_{x\notin R}\ket x\bra x\otimes I\otimes I+\sum_{x\in
+R}\ket x\bra x\otimes I\otimes I
+\end{align}\]</span></p>
+<p>Therefore we have <span class="math display">\[\begin{align}
+    D_{k+1}
+    &amp;=\sum_{R\subset S}\left\|O_R(\psi_k^R-\psi_k)+\left(\sum_{x\in
+R}\ket x\bra x\otimes(X-I)\otimes I\right)\psi_k\right\|^2
+\end{align}\]</span></p>
+<p>To apply <a href="lemma-1">Lemma 1</a>, we upper bound the first
+term:</p>
+<p><span class="math display">\[\begin{align}
+    \sum_{R\subset S}\left\|O_R(\psi_k^R-\psi_k)\right\|^2
+    &amp;=\sum_{R\subset S}\left\|(\psi_k^R-\psi_k)\right\|^2\\
+    &amp;=D_k\\
+\end{align}\]</span></p>
+<p>and the second term:</p>
+<p><span class="math display">\[\begin{align}
+    &amp;\sum_{R\subset S}\left\|\left(\sum_{x\in R}\ket x\bra
+x\otimes(X-I)\otimes I\right)\psi_k\right\|^2\\
+    &amp;=\sum_{R\subset S}\sum_{x\in R}\braket{\psi_k|(\ket x\bra
+x\otimes(2I-2X)\otimes I)|\psi_k}\\
+    &amp;=2\binom{N-1}{M-1}\sum_{x\in S}\braket{\psi_k|(\ket x\bra
+x\otimes(I-X))|\psi_k}\\
+    &amp;=2\binom{N-1}{M-1}(\braket{\psi_k|\psi_k}-\braket{\psi_k|I\otimes
+X\otimes I|\psi_k})\\
+    &amp;\le4\binom{N-1}{M-1}
+\end{align}\]</span></p>
+<p>By induction, <span
+class="math inline">\(D_k\le4k^2\binom{N-1}{M-1}\)</span>, and with <a
+href="#lemma-1">Lemma 1</a> we conclude that <span
+class="math display">\[\begin{align}
+    D_{k+1}
+    &amp;\le\left(2k\sqrt{\binom{N-1}{M-1}}+2\sqrt{\binom{N-1}{M-1}}\right)^2\\
+    &amp;=4(k+1)^2\binom{N-1}{M-1}
+\end{align}\]</span></p>
+<h3 id="lowerbound-of-d_w">Lowerbound of <span
+class="math inline">\(D_W\)</span></h3>
+<p>For the second half of the proof, we lowerbound <span
+class="math inline">\(D_k\)</span> by <span
+class="math inline">\(\Omega(1)\binom NM\)</span>. First, we define the
+projection matrix onto the subspace spanned by the solutions <span
+class="math inline">\(R\)</span>:</p>
+<p><span class="math display">\[\begin{align}
+    P_R:=\sum_{x\in R}\ket x\bra x\otimes I
+\end{align}\]</span></p>
+<p>Then again, we split <span class="math inline">\(D_W\)</span> into
+two parts, and try to apply <a href="#lemma-1">Lemma 1</a>:</p>
+<p><span class="math display">\[\begin{align}
+    D_W
+    &amp;=\sum_{R\subset
+S}\left\|(I-P_R)\psi_W^R+(P_R\psi_W^R-\psi_W)\right\|^2\\
+\end{align}\]</span></p>
+<p>For the first term, we have <span
+class="math inline">\(\braket{\psi_W^R|(I-P_R)|\psi_W^R}\le\frac12\)</span>,
+as we may assume that the probability of success is no less than <span
+class="math inline">\(\frac12\)</span> for this quantum algorithm. Thus
+we write down</p>
+<p><span class="math display">\[\begin{align}
+    \sum_{R\subset S}\left\|(I-P_R)\psi_W^R\right\|^2\le\frac12\binom NM
+\end{align}\]</span></p>
+<p>For the second term, we have</p>
+<p><span class="math display">\[\begin{align}
+    \left\|P_R\psi_W^R-\psi_W\right\|^2
+    &amp;=1+\braket{\psi_W^R|P_R|\psi_W^R}-2\Re\braket{\psi_W|P_R|\psi_W^R}\\
+    &amp;\ge\frac32-2\|P_R\psi_W\|^2\\
+    &amp;=\frac32-2\braket{\psi_W|P_R|\psi_W}\\
+\end{align}\]</span></p>
+<p>Summing over <span class="math inline">\(R\)</span>,</p>
+<p><span class="math display">\[\begin{align}
+    \sum_{R\subset S}\left\|P_R\psi_W^R-\psi_W\right\|^2
+    &amp;\ge\frac32\binom NM-2\sum_{R\subset S}\sum_{x\in
+R}\braket{\psi_W|(\ket x\bra x\otimes I)|\psi_W}\\
+    &amp;=\frac32\binom NM-2\binom{N-1}{M-1}\sum_{x\in
+S}\braket{\psi_W|(\ket x\bra x\otimes I)|\psi_W}\\
+    &amp;=\frac32\binom NM-2\binom{N-1}{M-1}\\
+    &amp;=\left(\frac32-2\frac MN\right)\binom NM
+\end{align}\]</span></p>
+<p>We may assume that <span class="math inline">\(\frac
+MN\le\frac14\)</span>. (In fact, for <span class="math inline">\(\frac
+MN&gt;\frac 14\)</span>, the problem is trivial as one only needs less
+than 4 trials on average using a naive algorithm.) We then apply <a
+href="#lemma-1">Lemma 1</a>:</p>
+<p><span class="math display">\[\begin{align}
+    D_W
+    &amp;\ge\left(\sqrt{\frac32-2\frac MN}-\sqrt{\frac12}\right)^2\binom
+NM\\
+    &amp;\ge\left(\frac32-\sqrt2\right)\binom NM
+\end{align}\]</span></p>
+<p>Combining the lowerbound and upperbound of <span
+class="math inline">\(D_W\)</span>, we have</p>
+<p><span class="math display">\[\begin{align}
+    &amp;\left(\frac32-\sqrt2\right)\binom NM\le
+D_W\le4W^2\binom{N-1}{M-1}\\
+    &amp;\implies W\ge\frac{2-\sqrt2}4\sqrt{\frac NM}\\
+    &amp;\implies W\ge\Omega\left(\sqrt{\frac NM}\right)
+\end{align}\]</span></p>
+<p>Which completes our proof.</p>
+<h1 id="summary">Summary</h1>
+<p>Although the proof is elegant, the result is rather disappointing, as
+some of us might expect more computational power out of a quantum
+computer. As we have learnt, assuming no structure for the solutions, a
+quantum computer can offer at most a polynomial speed up. (However, for
+problem with nice structures, we might be able to achieve exponential
+speedup, a example would be integer factoring, which can be solved
+effectively with quantum fourier transform, while no known classical
+algorithm can do factorization effectively.) This doesn't imply <span
+class="math inline">\(\textbf{BQP}\subset \textbf{NP}\)</span> however,
+as there might be some yet unknown structures for the solution space of
+<span class="math inline">\(\textbf{NP}\)</span>-complete problems which
+we can exploit.</p>
+<p>I read the original proof on <em>Quantum Computation and Quantum
+Information</em>, page 269-271. However, the proof only considered the
+situation where <span class="math inline">\(M=1\)</span>, so I spent
+like a whole afternoon generalizing it to arbitrary <span
+class="math inline">\(M\)</span>. That's when I came up with the idea of
+projection matrix in the second part of the proof. However, while I was
+writing this post, I realized that the original proof only allowed
+queries of "phase oracle", rather than the stantard oracle case, yet I
+don't know how to transform a phase oracle to a standard oracle. (If you
+know how to do the reduction, please contact me, and I'd like to learn
+about it!) So I spent another afternoon modifying the proof so that it
+applys to standard oracle, though making the proof more tedious.</p>
+]]></content>
+      <categories>
+        <category>quantum</category>
+      </categories>
+      <tags>
+        <tag>algorithm</tag>
+        <tag>quantum</tag>
+        <tag>linear algeket</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Markdown and $Math$ Test</title>
     <url>/2023/02/11/math-test/</url>
     <content><![CDATA[<h1 id="h1-heading-8-">h1 Heading 8-)</h1>
@@ -647,525 +1166,6 @@ role="doc-backlink">↩︎</a></p></li>
       </categories>
       <tags>
         <tag>test</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Optimality of Grover&#39;s Algorithm</title>
-    <url>/2023/02/24/optimal-grover/</url>
-    <content><![CDATA[<h1 id="introduction">Introduction</h1>
-<p>Let's start with the <em>SAT</em> problem: suppose we are given a
-boolean SAT formula with <span class="math inline">\(n\)</span>
-variables and <span class="math inline">\(poly(n)\)</span> clauses, and
-we want to know whether there exists a satisfiying assignment. This
-problem is known to be <em>NP-complete</em>, thus is generally believed
-to be hard to solve on a classical computer. The <em>exponential time
-hypothesis</em> states that satisfiability of SAT cannot be solved in
-<span class="math inline">\(2^{o(n)}\)</span> time. However, with
-<em>Grover's algorithm</em> on a quantum computer, one can determine the
-existence of satisfying assignment, or even find one, within time <span
-class="math inline">\(O\left(2^{\frac n2}\right)\)</span>! In fact, for
-any search problem with <span class="math inline">\(N\)</span>
-candidates and <span class="math inline">\(M\)</span> solutions,
-<em>Grover's algorithm</em> can find one solution with <span
-class="math inline">\(O\left(\sqrt{\frac NM}\right)\)</span> operations,
-while a classical algorithm usually takes <span
-class="math inline">\(O(\frac NM)\)</span> operations.</p>
-<span id="more"></span>
-<p>This implies that quantum computers are inherently much more powerful
-that classical computers, right? Well, yes but no. On one hand,
-<em>Grover's algorithm</em> does offer a sqaure root speed up over
-classical algorithms. On the other hand, however, one can prove that for
-a general unstructured search problem with <span
-class="math inline">\(N\)</span> candidates and <span
-class="math inline">\(M\)</span> solutions, no quantum algorithms take
-less than <span class="math inline">\(\Theta\left(\sqrt{\frac
-NM}\right)\)</span> operations to find a solution! This can be huge
-disappointment for quantum enthusiasts, who might believe that quantum
-computers might offer a super-polynomial or even exponential speed up
-over classical computers for general unstructured problems. We will dive
-into this topic in the following paragraphs.</p>
-<h1 id="basic-facts">Basic facts</h1>
-<h2 id="definition-of-general-search-problems">Definition of general
-search problems</h2>
-<blockquote>
-<p>Let <span class="math inline">\(S=\{0,1\}^n\)</span> be the search
-space, and <span class="math inline">\(R\subset S\)</span> be the
-solutions, we define <span class="math inline">\(N=|S|,M=|R|\)</span>.
-Let <span class="math inline">\(f_R:S\to\{0,1\}\)</span> be a function
-that checks whether a given solution is valid, i.e. <span
-class="math inline">\(f_R(x)=1\iff x\in R\)</span>. To find a solution,
-we are allowed to query <span class="math inline">\(f_R\)</span> as an
-oracle in our algorithm design. (For a quantum algorithm, we are given
-an "oracle operation" <span class="math inline">\(O_R\)</span> such that
-<span class="math inline">\(O_R\ket x\ket b=\ket x\ket{b\oplus
-f_R(x)}\)</span>) The efficiency is measured by the number of oracle
-queries.</p>
-</blockquote>
-<h2 id="hardness-of-general-search-problems">Hardness of general search
-problems</h2>
-<p>With no other assumptions about the structure of the problem, the
-best a classical algorithm can do is to guess a solution randomly.
-Obviously it takes <span class="math inline">\(\Theta\left(\frac
-NM\right)\)</span> oracle queries on average to find a solution.
-However, for a quantum computer, it only takes <span
-class="math inline">\(\Theta\left(\sqrt{\frac NM}\right)\)</span> oracle
-queries to do so, using <em>Grover's algorithm</em>. The procedure of
-the algorithm is left out in this post, and you are encouraged to check
-it out yourself.</p>
-<h1 id="optimality-of-grovers-algorithm">Optimality of Grover's
-algorithm</h1>
-<p>First, we introduce a lemma to bound the sum of vector norms:</p>
-<h2 id="lemma-1">Lemma 1</h2>
-<blockquote>
-<p>Let <span class="math inline">\(\{\alpha_i\}\)</span> and <span
-class="math inline">\(\{\beta_i\}\)</span> be some finite sequence of
-vectors in a inner product space. Then we have <span
-class="math display">\[\begin{align}
-  \sum_i\|\alpha_i+\beta_i\|^2&amp;\le\left(\sqrt{\sum_i\|\alpha_i\|^2}+\sqrt{\sum_i\|\beta_i\|^2}\right)^2\\
-  \sum_i\|\alpha_i+\beta_i\|^2&amp;\ge\left(\sqrt{\sum_i\|\alpha_i\|^2}-\sqrt{\sum_i\|\beta_i\|^2}\right)^2
-\end{align}\]</span></p>
-</blockquote>
-<h2 id="proof-of-lemma-1">Proof of <a href="#lemma-1">Lemma 1</a></h2>
-<p>By the triangle inequality, we have</p>
-<p><span class="math display">\[\begin{align}
-    \sum_i\|\alpha_i+\beta_i\|^2
-    &amp;\le\sum_i(\|\alpha_i\|+\|\beta_i\|)^2\\
-    &amp;=\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2+2\sum_i\|\alpha_i\|\|\beta_i\|
-\end{align}\]</span></p>
-<p>Then we apply Cauchy-Schwarz inequality on the third term:</p>
-<p><span class="math display">\[\begin{align}
-    \sum_i\|\alpha_i+\beta_i\|^2
-    &amp;\le\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2+2\sqrt{\sum_i\|\alpha_i\|^2}\sqrt{\sum_i\|\beta_i\|^2}\\
-    &amp;=\left(\sqrt{\sum_i\|\alpha_i\|^2}+\sqrt{\sum_i\|\beta_i\|^2}\right)^2
-\end{align}\]</span></p>
-<p>The other side is similar:</p>
-<p><span class="math display">\[\begin{align}
-    \sum_i\|\alpha_i+\beta_i\|^2
-    &amp;\ge\sum_i(\|\alpha_i\|-\|\beta_i\|)^2\\
-    &amp;=\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2-2\sum_i\|\alpha_i\|\|\beta_i\|\\
-    &amp;\ge\sum_i\|\alpha_i\|^2+\sum_i\|\beta_i\|^2-2\sqrt{\sum_i\|\alpha_i\|^2}\sqrt{\sum_i\|\beta_i\|^2}\\
-    &amp;=\left(\sqrt{\sum_i\|\alpha_i\|^2}-\sqrt{\sum_i\|\beta_i\|^2}\right)^2
-\end{align}\]</span></p>
-<p>Now we are going to prove the main result:</p>
-<h2 id="theorem-1">Theorem 1</h2>
-<blockquote>
-<p>All quantum algorithms that find a solution with <span
-class="math inline">\(O(1)\)</span> probability requires <span
-class="math inline">\(\Omega\left(\sqrt{\frac NM}\right)\)</span> oracle
-queries.</p>
-</blockquote>
-<h2 id="proof-of-theorem-1">Proof of <a href="#theorem-1">Theorem
-1</a></h2>
-<p>Without loss of generality, we may assume that the quantum algorithm
-uses <span class="math inline">\(m\)</span> qubits for some <span
-class="math inline">\(m&gt;n\)</span>. It applies <span
-class="math inline">\(W\)</span> unitary operations, interleaved with
-<span class="math inline">\(W\)</span> oracle operations. More
-specifically, let <span class="math inline">\(\ket\psi\)</span> be the
-initial state of the register, we compute <span
-class="math inline">\(\ket{\psi_W^R}:=U_WO_RU_{W-1}O_R\cdots
-U_1O_R\ket\psi\)</span>, and then measure the first <span
-class="math inline">\(n\)</span> qubits of <span
-class="math inline">\(\ket{\psi_W^R}\)</span> as an answer. We may
-assume that the oracle queries are done on the first <span
-class="math inline">\(n\)</span> qubits, and the result is XORed with
-the <span class="math inline">\((n+1)\)</span>'th qubit. (Otherwise we
-can "swap" the queried qubits with the first <span
-class="math inline">\((n+1)\)</span> qubits, and then swap them back
-after the query, as there is no limit on the unitary operations we
-apply.)</p>
-<p>We define <span class="math display">\[\begin{align}
-    \ket{\psi_k^R}&amp;:=U_kO_RU_{k-1}O_R\cdots U_1O_R\ket\psi\\
-    \ket{\psi_k}&amp;:=U_kU_{k-1}\cdots U_1\ket\psi\\
-    D_k&amp;:=\sum_{R\subset S}\left\|\psi_k^R-\psi_k\right\|^2
-\end{align}\]</span></p>
-<h3 id="upperbound-of-d_w">Upperbound of <span
-class="math inline">\(D_W\)</span></h3>
-<p>For the first half of the proof, we upperbound <span
-class="math inline">\(D_k\)</span> by <span
-class="math inline">\(4k^2\binom{N-1}{M-1}\)</span> using induction:</p>
-<p><span class="math display">\[\begin{align}
-    D_{k+1}
-    &amp;=\sum_{R\subset
-S}\left\|U_{k+1}O_R\psi_k^R-U_{k+1}\psi_k\right\|^2\\
-    &amp;=\sum_{R\subset S}\left\|O_R\psi_k^R-\psi_k\right\|^2\\
-    &amp;=\sum_{R\subset
-S}\left\|O_R(\psi_k^R-\psi_k)+(O_R-I)\psi_k\right\|^2\\
-\end{align}\]</span></p>
-<p>Notice that <span class="math inline">\(O_R\)</span> and <span
-class="math inline">\(I\)</span> can be written as <span
-class="math display">\[\begin{align}
-    O_R&amp;=\sum_{x\notin R}\ket x\bra x\otimes I\otimes I+\sum_{x\in
-R}\ket x\bra x\otimes X\otimes I\\
-    I&amp;=\sum_{x\notin R}\ket x\bra x\otimes I\otimes I+\sum_{x\in
-R}\ket x\bra x\otimes I\otimes I
-\end{align}\]</span></p>
-<p>Therefore we have <span class="math display">\[\begin{align}
-    D_{k+1}
-    &amp;=\sum_{R\subset S}\left\|O_R(\psi_k^R-\psi_k)+\left(\sum_{x\in
-R}\ket x\bra x\otimes(X-I)\otimes I\right)\psi_k\right\|^2
-\end{align}\]</span></p>
-<p>To apply <a href="lemma-1">Lemma 1</a>, we upper bound the first
-term:</p>
-<p><span class="math display">\[\begin{align}
-    \sum_{R\subset S}\left\|O_R(\psi_k^R-\psi_k)\right\|^2
-    &amp;=\sum_{R\subset S}\left\|(\psi_k^R-\psi_k)\right\|^2\\
-    &amp;=D_k\\
-\end{align}\]</span></p>
-<p>and the second term:</p>
-<p><span class="math display">\[\begin{align}
-    &amp;\sum_{R\subset S}\left\|\left(\sum_{x\in R}\ket x\bra
-x\otimes(X-I)\otimes I\right)\psi_k\right\|^2\\
-    &amp;=\sum_{R\subset S}\sum_{x\in R}\braket{\psi_k|(\ket x\bra
-x\otimes(2I-2X)\otimes I)|\psi_k}\\
-    &amp;=2\binom{N-1}{M-1}\sum_{x\in S}\braket{\psi_k|(\ket x\bra
-x\otimes(I-X))|\psi_k}\\
-    &amp;=2\binom{N-1}{M-1}(\braket{\psi_k|\psi_k}-\braket{\psi_k|I\otimes
-X\otimes I|\psi_k})\\
-    &amp;\le4\binom{N-1}{M-1}
-\end{align}\]</span></p>
-<p>By induction, <span
-class="math inline">\(D_k\le4k^2\binom{N-1}{M-1}\)</span>, and with <a
-href="#lemma-1">Lemma 1</a> we conclude that <span
-class="math display">\[\begin{align}
-    D_{k+1}
-    &amp;\le\left(2k\sqrt{\binom{N-1}{M-1}}+2\sqrt{\binom{N-1}{M-1}}\right)^2\\
-    &amp;=4(k+1)^2\binom{N-1}{M-1}
-\end{align}\]</span></p>
-<h3 id="lowerbound-of-d_w">Lowerbound of <span
-class="math inline">\(D_W\)</span></h3>
-<p>For the second half of the proof, we lowerbound <span
-class="math inline">\(D_k\)</span> by <span
-class="math inline">\(\Omega(1)\binom NM\)</span>. First, we define the
-projection matrix onto the subspace spanned by the solutions <span
-class="math inline">\(R\)</span>:</p>
-<p><span class="math display">\[\begin{align}
-    P_R:=\sum_{x\in R}\ket x\bra x\otimes I
-\end{align}\]</span></p>
-<p>Then again, we split <span class="math inline">\(D_W\)</span> into
-two parts, and try to apply <a href="#lemma-1">Lemma 1</a>:</p>
-<p><span class="math display">\[\begin{align}
-    D_W
-    &amp;=\sum_{R\subset
-S}\left\|(I-P_R)\psi_W^R+(P_R\psi_W^R-\psi_W)\right\|^2\\
-\end{align}\]</span></p>
-<p>For the first term, we have <span
-class="math inline">\(\braket{\psi_W^R|(I-P_R)|\psi_W^R}\le\frac12\)</span>,
-as we may assume that the probability of success is no less than <span
-class="math inline">\(\frac12\)</span> for this quantum algorithm. Thus
-we write down</p>
-<p><span class="math display">\[\begin{align}
-    \sum_{R\subset S}\left\|(I-P_R)\psi_W^R\right\|^2\le\frac12\binom NM
-\end{align}\]</span></p>
-<p>For the second term, we have</p>
-<p><span class="math display">\[\begin{align}
-    \left\|P_R\psi_W^R-\psi_W\right\|^2
-    &amp;=1+\braket{\psi_W^R|P_R|\psi_W^R}-2\Re\braket{\psi_W|P_R|\psi_W^R}\\
-    &amp;\ge\frac32-2\|P_R\psi_W\|^2\\
-    &amp;=\frac32-2\braket{\psi_W|P_R|\psi_W}\\
-\end{align}\]</span></p>
-<p>Summing over <span class="math inline">\(R\)</span>,</p>
-<p><span class="math display">\[\begin{align}
-    \sum_{R\subset S}\left\|P_R\psi_W^R-\psi_W\right\|^2
-    &amp;\ge\frac32\binom NM-2\sum_{R\subset S}\sum_{x\in
-R}\braket{\psi_W|(\ket x\bra x\otimes I)|\psi_W}\\
-    &amp;=\frac32\binom NM-2\binom{N-1}{M-1}\sum_{x\in
-S}\braket{\psi_W|(\ket x\bra x\otimes I)|\psi_W}\\
-    &amp;=\frac32\binom NM-2\binom{N-1}{M-1}\\
-    &amp;=\left(\frac32-2\frac MN\right)\binom NM
-\end{align}\]</span></p>
-<p>We may assume that <span class="math inline">\(\frac
-MN\le\frac14\)</span>. (In fact, for <span class="math inline">\(\frac
-MN&gt;\frac 14\)</span>, the problem is trivial as one only needs less
-than 4 trials on average using a naive algorithm.) We then apply <a
-href="#lemma-1">Lemma 1</a>:</p>
-<p><span class="math display">\[\begin{align}
-    D_W
-    &amp;\ge\left(\sqrt{\frac32-2\frac MN}-\sqrt{\frac12}\right)^2\binom
-NM\\
-    &amp;\ge\left(\frac32-\sqrt2\right)\binom NM
-\end{align}\]</span></p>
-<p>Combining the lowerbound and upperbound of <span
-class="math inline">\(D_W\)</span>, we have</p>
-<p><span class="math display">\[\begin{align}
-    &amp;\left(\frac32-\sqrt2\right)\binom NM\le
-D_W\le4W^2\binom{N-1}{M-1}\\
-    &amp;\implies W\ge\frac{2-\sqrt2}4\sqrt{\frac NM}\\
-    &amp;\implies W\ge\Omega\left(\sqrt{\frac NM}\right)
-\end{align}\]</span></p>
-<p>Which completes our proof.</p>
-<h1 id="summary">Summary</h1>
-<p>Although the proof is elegant, the result is rather disappointing, as
-some of us might expect more computational power out of a quantum
-computer. As we have learnt, assuming no structure for the solutions, a
-quantum computer can offer at most a polynomial speed up. (However, for
-problem with nice structures, we might be able to achieve exponential
-speedup, a example would be integer factoring, which can be solved
-effectively with quantum fourier transform, while no known classical
-algorithm can do factorization effectively.) This doesn't imply <span
-class="math inline">\(\textbf{BQP}\subset \textbf{NP}\)</span> however,
-as there might be some yet unknown structures for the solution space of
-<span class="math inline">\(\textbf{NP}\)</span>-complete problems which
-we can exploit.</p>
-<p>I read the original proof on <em>Quantum Computation and Quantum
-Information</em>, page 269-271. However, the proof only considered the
-situation where <span class="math inline">\(M=1\)</span>, so I spent
-like a whole afternoon generalizing it to arbitrary <span
-class="math inline">\(M\)</span>. That's when I came up with the idea of
-projection matrix in the second part of the proof. However, while I was
-writing this post, I realized that the original proof only allowed
-queries of "phase oracle", rather than the stantard oracle case, yet I
-don't know how to transform a phase oracle to a standard oracle. (If you
-know how to do the reduction, please contact me, and I'd like to learn
-about it!) So I spent another afternoon modifying the proof so that it
-applys to standard oracle, though making the proof more tedious.</p>
-]]></content>
-      <categories>
-        <category>quantum</category>
-      </categories>
-      <tags>
-        <tag>quantum</tag>
-        <tag>linear algeket</tag>
-        <tag>algorithm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Secretary Problems and High-order Sum of Harmonic Series</title>
-    <url>/2023/04/30/secretary-problems/</url>
-    <content><![CDATA[<h1 id="background">Background</h1>
-<h2 id="the-story">The story</h2>
-<p>So I was reading this <a
-href="https://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15850-f20/www/notes/lec27.pdf">lecture
-note</a> about secretary problems, and I was trying to prove Theorem
-24.3 myself. I also obtained an sum representing the probability which
-is different from the one in the lecture note. However I had some
-difficulty proving that the two sums are equilvalent (if not given this
-problem). After a day of suffering, using the summation by parts
-technique, I found that the sum was in fact a high-order sum of the
-harmonic series, and that this sum has a pretty simple
-representation.</p>
-<span id="more"></span>
-<h2 id="secretary-problems">Secretary problems</h2>
-<p>Here we define the secretary problems. Suppose there are <span
-class="math inline">\(n\)</span> items, each with a value <span
-class="math inline">\(v_i\ge0\)</span>, which you doesn't know in
-advance. Now these items are presented to you one by one, in uniformly
-random order. Each time you are presented with an item and its value,
-you can choose to pick it and end the game. Or, you can choose to pass,
-and request the next item. Notice that once an item has been rejected,
-it cannot be picked anymore. Now design an algorithm to maximize the
-expected value you get.</p>
-<p>Let <span class="math inline">\(V_{\max}\)</span> denote the maximum
-value. Then there is a simple strategy with expected value <span
-class="math inline">\(\frac14\mathbb E[V_{\max}]\)</span>: we pass the
-first half, and record the maximum value; then for the second half, we
-take the first item that has value greater then the recorded value.
-Obviously we can take the maximum value with probability <span
-class="math inline">\(\ge\frac14\)</span>, so the expected value is at
-least <span class="math inline">\(\frac14\mathbb
-E[V_{\max}]\)</span>.</p>
-<h2 id="wait-and-pick-algorithms">Wait-and-pick algorithms</h2>
-<p>The above algorithm is called a wait-and-pick algorithm. In fact,
-with a more detailed analysis, we can obtain a better result than <span
-class="math inline">\(\frac14\mathbb E[V_{\max}]\)</span>. Suppose there
-are <span class="math inline">\(n\)</span> items, and we pass the first
-<span class="math inline">\(m\)</span> items and record the maximum
-value. Then for the rest <span class="math inline">\(n-m\)</span> items,
-we take the first one that is larger than the recorded value. Then we
-can analyze the probability that we pick the <span
-class="math inline">\(V_{\max}\)</span>.</p>
-<p>My first thought is to enumerate over the maximum value of the first
-<span class="math inline">\(m\)</span> items. Without loss of
-gernerality, we may assume that the <span
-class="math inline">\(\{\text{value of items}\}=[n]\)</span>. Then the
-probability that the maximum over the first <span
-class="math inline">\(m\)</span> items being <span
-class="math inline">\(k\)</span> is <span class="math display">\[
-    \frac{\binom{k-1}{m-1}}{\binom nm}
-\]</span> Conditioned on the first <span
-class="math inline">\(m\)</span> items chosen, we may look at the
-permutation of the rest <span class="math inline">\(n-m\)</span> items.
-Notice that there are <span class="math inline">\(n-k\)</span> items
-larger than <span class="math inline">\(k\)</span> in the second
-portion, and the probability that <span class="math inline">\(n\)</span>
-being the first item to appear is <span
-class="math inline">\(\frac1{n-k}\)</span>. So overall, the probability
-can be written as <span class="math display">\[
-    \Pr[\text{Pick }n]=\sum_{k=m}^{n-1}\frac{\binom{k-1}{m-1}}{\binom
-nm}\frac1{n-k}=\frac1{\binom
-nm}\sum_{k=m}^{n-1}\binom{k-1}{m-1}\frac1{n-k}
-\]</span></p>
-<p>However, we might take a different approach as in the lecture note,
-that we enumerate over the position of <span
-class="math inline">\(n\)</span> in the sequence. Suppose that <span
-class="math inline">\(n\)</span> appears at the <span
-class="math inline">\(k\)</span>'th position, where <span
-class="math inline">\(k&gt;m\)</span>. Then the event that we pick <span
-class="math inline">\(n\)</span> is equivalent to the event that the
-maximum of the first <span class="math inline">\(k-1\)</span> items lies
-within first <span class="math inline">\(m\)</span> items, or the "pass
-portion". Therefore we can write the expression: <span
-class="math display">\[
-    \Pr[\text{Pick }n]=\sum_{k=m+1}^n\frac1n\frac m{k-1}=\frac
-mn\sum_{k=m}^{n-1}\frac1k
-\]</span> And this expression is much easier to analyze than the
-previous one. By approximating the harmonic sequence with natural
-logarithm, we can see that for <span class="math inline">\(m\approx
-\frac n{\text e}\)</span>, the probability is maximized at <span
-class="math inline">\(\frac1{\text e}\)</span>, so our expected value is
-at least <span class="math inline">\(\frac1{\text e}\mathbb
-E[V_{\max}]\)</span>.</p>
-<p>So now we have two expressions for <span
-class="math inline">\(\Pr[\text{Pick }n]\)</span>. However, they look
-completely different! Are they really equilvalent? Well, by this problem
-we know the answer is yes. However, if not given the background of the
-secretary problem and wait-and-pick algorithm, how are we gonna prove
-this equation?</p>
-<h1 id="equation-of-sums">Equation of sums</h1>
-<p>We can write down the following equation: <span
-class="math display">\[\begin{equation}
-    \sum_{k=m}^{n-1}\binom{k-1}{m-1}\frac1{n-k}=\binom{n-1}{m-1}\sum_{k=m}^{n-1}\frac1k\label{eq1}
-\end{equation}\]</span> And we want to prove this equation, without
-relying on the secretary problem we just described. In other words, we
-want to sum up the left-hand side.</p>
-<h2 id="failed-attempts">Failed attempts</h2>
-<p>My first intuition is <em>High-order differences</em>. This trick can
-be used to prove the following equation: (See <em>Concrete
-Mathematics</em>, pp. 187-192) <span class="math display">\[
-    \sum_k\binom nk\frac{(-1)^k}{x+k}=\frac1{\binom{x+n}nx}
-\]</span> This equation might somehow look similar to the our target.
-However, even with the trick of negating the upper index (See
-<em>Concrete Mathematics</em>, p. 164), I was stuck and couldn't
-simplify the sum.</p>
-<p>Then I tried to use <em>generating functions</em> since the sum
-looked like some convolution. But again I was stuck, as convolution
-couldn't handle terms involving <span class="math inline">\(n\)</span>.
-(Most likely the all-mighty generating functions can solve this problem,
-but I'm not so familiar with it. QwQ) <strong>(Update: see <a
-href="#generating-function">Generating function</a>)</strong> Then I
-realized that, perhaps I have to try some more classical and brute
-methods.</p>
-<h2 id="summation-by-parts">Summation by parts</h2>
-<p>This is what brings real hope to the problem. We can use the
-summation by parts trick on the left-hand side of <span
-class="math inline">\(\eqref{eq1}\)</span>: <span
-class="math display">\[\begin{align*}
-    \sum_{k=m}^{n-1}\binom{k-1}{m-1}\frac1{n-k}
-    &amp;=\sum_{k=1}^{n-m}\binom{n-k-1}{m-1}\frac 1k\\
-    &amp;=\sum_{k=1}^{n-m}\left(\binom{n-k-1}{m-1}-\binom{n-k-2}{m-1}\right)\left(\sum_{i=1}^k\frac
-1i\right)\\
-    &amp;=\sum_{k=1}^{n-m}\binom{n-k-2}{m-2}H_k
-\end{align*}\]</span> Here we define <span
-class="math inline">\(H_k:=\sum_{i=1}^k\frac1i\)</span>. After one round
-of summation by parts, we have reduced the lower index of the
-combination numbers by one. Therefore after many rounds, we cna fully
-eliminate the combination numbers! Let <span
-class="math inline">\(S_{l,k}\)</span> denote the <span
-class="math inline">\(k\)</span>'th term of the <span
-class="math inline">\(l\)</span>'th order prefix sum of the harmonic
-series. More specifically, we define <span
-class="math inline">\(S_{l,k}\)</span> as follows: <span
-class="math display">\[\begin{align*}
-    S_{0,k}&amp;:=\frac1k\\
-    S_{1,k}&amp;:=\sum_{i=1}^k S_{0,i}\\
-    &amp;\vdots\\
-    S_{l,k}&amp;:=\sum_{i=1}^k S_{l-1,i}\\
-\end{align*}\]</span> Then by applying summation by parts repeatedly, we
-obtain that <span class="math display">\[\begin{align*}
-    \sum_{k=1}^{n-m}\binom{n-k-1}{m-1}S_{0,k}
-    &amp;=\sum_{k=1}^{n-m}\binom{n-k-2}{m-2}S_{1,k}\\
-    &amp;\vdots\\
-    &amp;=\sum_{k=1}^{n-m}\binom{n-k-m}0S_{m-1,k}\\
-    &amp;=\sum_{k=1}^{n-m}S_{m-1,k}\\
-    &amp;=H_{m,n-m}
-\end{align*}\]</span> Now the toxic sum has been simplified to just a
-single symbol. However a new problem arises: how to prove <span
-class="math inline">\(S_{m,n-m}\)</span> equals the right-hand side of
-<span class="math inline">\(\eqref{eq1}\)</span>? Well, now we can
-easily apply induction. We want to prove the following equation: <span
-class="math display">\[
-    S_{m,n}=\binom{n+m-1}{m-1}(H_{n+m-1}-H_{m-1})
-\]</span> First, for <span class="math inline">\(m=1\)</span>, the
-equation obviously holds. Then suppose that it holds for some <span
-class="math inline">\(m\)</span>. Then for <span
-class="math inline">\(S_{m+1,n}\)</span>, we have <span
-class="math display">\[\begin{align*}
-    S_{m+1,n}
-    &amp;=\sum_{i=0}^nS_{m,i}\\
-    &amp;=\sum_{i=0}^n\binom{i+m-1}{m-1}(H_{i+m-1}-H_{m-1})\\
-    &amp;=-H_{m-1}\sum_{i=0}^n\binom{i+m-1}{m-1}+\sum_{i=0}^nH_{i+m-1}\binom{i+m-1}{m-1}\\
-    &amp;=-H_{m-1}\binom{n+m}m+\sum_{i=0}^{n-1}(H_{i+m-1}-H_{i+m})\left(\sum_{j=0}^i\binom{j+m-1}{m-1}\right)+H_{n+m-1}\sum_{i=0}^n\binom{i+m-1}{m-1}\\
-    &amp;=-H_{m-1}\binom{n+m}m-\sum_{i=0}^{n-1}\frac1{i+m}\binom{i+m}m+H_{n+m-1}\binom{n+m}m\\
-    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})-\frac1m\sum_{i=0}^{n-1}\binom{i+m-1}{m-1}\\
-    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})-\frac1m\binom{n+m-1}{m}\\
-    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})-\binom{n+m}m\frac{n}{m(n+m)}\\
-    &amp;=\binom{n+m}m(H_{n+m-1}-H_{m-1})+\binom{n+m}m\left(\frac1{n+m}-\frac1m\right)\\
-    &amp;=\binom{n+m}m(H_{n+m}-H_m)
-\end{align*}\]</span> where we have again used summation by parts trick
-in the above deduction.</p>
-<p>Therefore we conclude that for <span
-class="math inline">\(\eqref{eq1}\)</span>, <span
-class="math inline">\(LHS=S_{m,n-m}=RHS\)</span>.</p>
-<h1 id="conclusion">Conclusion</h1>
-<p>I was trying to figure out a proof using combinatorial techniques,
-and all methods didn't work until I tried summation by parts to
-repeatedly reduce the lower index of the combination numbers. In the
-course of working on the proof, I also made a somehow surprising
-discovery: the high-order sums of harmonic series actually has a pretty
-simple representation. Maybe this result has some potential use for
-other works.</p>
-<h1 id="generating-function">Generating function</h1>
-<p>So after I completed this blog, I suddenly realized this problem can
-actually be solved with generating function easily. (And I was dumb QwQ)
-First, we write the left-hand side of <span
-class="math inline">\(\eqref{eq1}\)</span> as <span
-class="math display">\[\begin{equation}
-    \sum_{k=0}^{n-m-1}\binom{m+k-1}{m-1}\frac1{n-m-k}\label{eq2}
-\end{equation}\]</span> Then recall that we can actually write down the
-generating function for the two multiplicants: <span
-class="math display">\[\begin{align*}
-    \sum_{k\ge0}\binom{m+k-1}{m-1}x^k&amp;=\frac1{(1-x)^m}=:f(x)\\
-    \sum_{k\ge1}\frac1{k}x^k&amp;=-\ln(1-x)=:g(x)
-\end{align*}\]</span> Then by convolution, <span
-class="math inline">\(\eqref{eq2}\)</span> is actually equal to <span
-class="math inline">\([x^{n-m}](f(x)g(x))\)</span>. Define <span
-class="math inline">\(h(x):=f(x)g(x)\)</span>, then we only need to
-compute <span class="math inline">\(\frac1{(n-m)!}h^{(n-m)}(0)\)</span>.
-So from now on, we focus on the derivatives of <span
-class="math inline">\(h(x)=\frac{-\ln(1-x)}{(1-x)^m}\)</span>. <span
-class="math display">\[\begin{align*}
-    h&#39;(x)&amp;=\frac{-m\ln(1-x)}{(1-x)^{m+1}}+\frac1{(1-x)^{m+1}}\\
-    h&#39;&#39;(x)&amp;=\frac{-m(m+1)\ln(1-x)}{(1-x)^{m+2}}+\frac{m+(m+1)}{(1-x)^{m+2}}\\
-    &amp;\vdots
-\end{align*}\]</span> Let <span class="math inline">\(q_i(x)\)</span>
-denote the second term of <span
-class="math inline">\(h^{(i)}(x)\)</span>. Then it's not hard to see
-that <span class="math display">\[\begin{align*}
-    q_0(x)&amp;=0\\
-    q_1(x)&amp;=\frac{1}{(1-x)^{m+1}}\\
-    q_2(x)&amp;=\frac{2m+1}{(1-x)^{m+2}}\\
-    &amp;\vdots\\
-    q_{i+1}(x)&amp;=\frac{m+i}{1-x}q_i(x)+\frac{\frac{(m+i-1)!}{(m-1)!}}{(1-x)^{i+1}}
-\end{align*}\]</span> Then by induction, we can prove that <span
-class="math display">\[
-    q_i(x)=\frac1{(1-x)^{i+1}}\frac{(m+i-1)!}{(m-1)!}\sum_{k=m}^{m+i-1}\frac1k
-\]</span> Therefore we have <span class="math display">\[
-    h^{(n-m)}(0)=q_{n-m}(0)=\frac{(n-1)!}{(m-1)!}\sum_{k=m}^{n-1}\frac1k
-\]</span> And <span class="math inline">\(\eqref{eq2}\)</span> is equal
-to <span class="math display">\[
-    \frac1{(n-m)!}h^{(n-m)}(0)=\binom{n-1}{m-1}\sum_{k=m}^{n-1}\frac1k
-\]</span> which is exactly the right-hand side of <span
-class="math inline">\(\eqref{eq1}\)</span>.</p>
-]]></content>
-      <categories>
-        <category>combinatorics</category>
-      </categories>
-      <tags>
-        <tag>algorithm</tag>
-        <tag>summation</tag>
-        <tag>combinatorics</tag>
-        <tag>discrete math</tag>
-        <tag>generating function</tag>
       </tags>
   </entry>
 </search>
