@@ -66,3 +66,7 @@ Now we can state our original problem, and prove it using Lemma 2 and Theorem 4.
 **Corollary 5.** Let $T=(V,E)$ be a tree, where $w:E\to\mathbb R$ is a weight function for edges. Let $path_k$ denote the maximum total weight of no more than $k$ edge-disjoint paths. Then $path_k$ is concave with respect to $k$, i.e. $path_{k+2}-path_{k+1}\le path_{k+1}-path_k$ for $k\ge 0$.
 
 **Proof.** One can see that $path_k=\max_{i=0}^k ans_k$ where $ans_k$ is defined in Theorem 4. This means that $path_k$ is the same as $ans_k$ when $ans_k$ is increasing, and stay fixed when $ans_k$ starts decreasing. Therefore $path_k$ is also concave.<div style="text-align: right"> $\blacksquare$ </div>
+
+# The case of vertex-disjoint paths
+
+(TBA)
